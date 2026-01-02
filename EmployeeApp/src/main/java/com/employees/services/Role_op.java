@@ -1,0 +1,77 @@
+
+
+package com.employees.services;
+
+import java.io.File;
+import java.util.Scanner;
+
+import com.employees.dao.EmpDAO;
+import com.employees.dao.EmpDAOImp;
+import com.employees.model.Employee;
+import com.employees.utils.Utils;
+
+public class Role_op {
+	public void grantRole() {
+		Employee employee = new Employee();
+		Scanner sc = new Scanner(System.in);
+        
+		File file = new File("output.json");
+		if (file.exists() && file.length() <= 2) {
+			System.out.println("no employees found");
+			return;
+		}
+			System.out.print("Enter the id to grant role: ");
+			String id = sc.next();
+			if (Checkoper.checkExists(id)) {
+				employee.setId(id);
+			} else {
+				System.out.println("Employee with id:" + id + " does not exist");
+				return;
+			}
+
+			boolean valid = false;
+			String role = null;
+			while (!valid) {
+				System.out.print("Enter new role: ");
+				role = sc.next().toUpperCase();
+				valid = employee.setRole(role);
+				if (!valid) {
+					System.out.println("Invalid role re-enter again");
+				}
+			}
+		EmpDAO dao = new EmpDAOImp();
+		dao.grantRole(id, role);
+            
+	}
+	public void revokeRole() {
+		Employee employee = new Employee();
+		Scanner sc = new Scanner(System.in);
+        
+		File file = new File("output.json");
+		if (file.exists() && file.length() <= 2) {
+			System.out.println("no employees found");
+			return;
+		}
+			System.out.print("Enter the id to revoke role: ");
+			String id = sc.next();
+			if (Checkoper.checkExists(id)) {
+				employee.setId(id);
+			} else {
+				System.out.println("Employee with id:" + id + " does not exist");
+				return;
+			}
+
+			boolean valid = false;
+			String role = null;
+			while (!valid) {
+				System.out.print("Enter new role: ");
+				role = sc.next().toUpperCase();
+				valid = employee.setRole(role);
+				if (!valid) {
+					System.out.println("Invalid role re-enter again");
+				}
+			}
+		EmpDAO dao = new EmpDAOImp();
+		dao.revokeRole(id, role);
+	}
+}
