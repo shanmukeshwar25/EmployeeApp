@@ -86,7 +86,7 @@ public class EmpDAOImp implements EmpDAO {
 		}
 	}
 
-	public void readData() {
+	public void viewEmp() {
 		JSONParser jsonParser = new JSONParser();
 		System.out.println();
 		System.out.println("  ----------------------------");
@@ -105,7 +105,7 @@ public class EmpDAOImp implements EmpDAO {
 		}
 	}
 
-	public void readById(String id) {
+	public void viewEmpById(String id) {
 		JSONParser parser = new JSONParser();
 		try {
 			boolean present = false;

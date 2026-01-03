@@ -1,6 +1,3 @@
-
-
-
 package com.employees.services;
 
 import java.util.Scanner;
@@ -15,23 +12,19 @@ public class ViewEmp {
 
 	// for viewing employees of a specific id
 	public void viewEmployeeById() {
-		try {
 			String id = null;
-			if (!Checkoper.role.equals("USER")) {
+			if (!LoginServices.role.equals("USER")) {
 				System.out.print("Enter the ID to view: ");
 				id = sc.next();
 			} else {
-				id = Checkoper.empid;
+				id = LoginServices.empid;
 			}
-			view.readById(id);
-		} catch (NumberFormatException ex) {
-			System.out.println("Please enter only numbers for ID, Age");
-		}
-	}
+			view.viewEmpById(id);
+		} 
 
 	// viewing all employees
 	public void viewallEmployee() {
-		view.readData();
+		view.viewEmp();
 	}
 }
 

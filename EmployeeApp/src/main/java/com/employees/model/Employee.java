@@ -1,13 +1,8 @@
 package com.employees.model;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import com.employees.controller.Menu;
 import com.employees.enums.Roles;
-import com.employees.services.Checkoper;
-import com.employees.utils.Utils;
 
 public class Employee {
 	private List<String> arr = new ArrayList<>();

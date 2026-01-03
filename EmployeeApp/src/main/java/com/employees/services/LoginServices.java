@@ -1,5 +1,4 @@
 
-
 package com.employees.services;
 
 import java.io.BufferedReader;
@@ -17,18 +16,22 @@ import org.json.simple.parser.ParseException;
 
 import com.employees.utils.Utils;
 
-public class Checkoper {
+public class LoginServices {
 	public static String role;
 	public static String empid;
 
-//	@SuppressWarnings("unchecked")
-	public static boolean checkLogin(String id, String p) {
-
+	// reading the data from file 
+	public static JSONArray readEmployeeData() throws FileNotFoundException, IOException, ParseException {
 		JSONParser jsonParser = new JSONParser();
-		JSONArray arr = new JSONArray();
+		try (BufferedReader br = new BufferedReader(new FileReader(Utils.file))) {
+			return (JSONArray) jsonParser.parse(br);
+		}
+	}
+	
+	// validating the login credentials 
+	public static boolean checkLogin(String id, String p) {
 		try {
-			Object emps = jsonParser.parse(new BufferedReader(new FileReader(Utils.file)));
-			arr = (JSONArray) emps;
+			JSONArray arr = readEmployeeData();
 			for (Object o : arr) {
 				JSONObject obj = (JSONObject) o;
 				if (obj.get("id").equals(id)) {
@@ -46,20 +49,25 @@ public class Checkoper {
 
 						Collections.sort(roles);
 
-						Checkoper.role = (String) roles.get(0);
+						LoginServices.role = (String) roles.get(0);
 
 						empid = id;
 						return true;
+					} else {
+						System.out.println("Incorrect credentails");
+						return false;
 					}
-					return false;
 				}
+
 			}
+			System.out.println("Incorrect credentails");
+			return false;
 		} catch (FileNotFoundException e) {
 			System.out.println("file is not found");
 		} catch (IOException e) {
-			System.out.println("error");
+			System.out.println("I/O error occured while reading the file");
 		} catch (ParseException e) {
-			System.out.println("parsing falied");
+			System.out.println("error parsing employee data");
 		}
 		return false;
 	}
@@ -68,21 +76,21 @@ public class Checkoper {
 	public static boolean checkExists(String id) {
 		JSONParser parser = new JSONParser();
 		try {
-			Object emps = parser.parse(new BufferedReader(new FileReader(Utils.file)));
-			JSONArray arr = (JSONArray) emps;
+			JSONArray arr = readEmployeeData();
 			for (Object o : arr) {
 				JSONObject emp = (JSONObject) o;
-				if (emp.get("id").equals(id)) {
+				if (id.equals(emp.get("id"))) {
 					return true;
 				}
 			}
 			return false;
+		} catch (FileNotFoundException e) {
+			System.out.println("file is not found");
 		} catch (IOException e) {
-			System.out.println("error");
+			System.out.println("I/O error occured while reading the file");
 		} catch (ParseException e) {
-			System.out.println("parsing falied");
+			System.out.println("error parsing employee data");
 		}
 		return false;
 	}
 }
-

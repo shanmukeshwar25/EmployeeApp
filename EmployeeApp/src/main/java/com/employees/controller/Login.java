@@ -3,9 +3,9 @@ package com.employees.controller;
 //login page for Admin
 import java.util.Scanner;
 
-import com.employees.services.Checkoper;
+import com.employees.services.LoginServices;
 public class Login {
-    public static void log() 
+    public static void start() 
     {
     	Scanner sc = new Scanner(System.in);
     	boolean correct = true;
@@ -18,12 +18,12 @@ public class Login {
 			String n = sc.next();
 			System.out.print("Enter the registered password: ");
 			String p = sc.next();
-			if(!Checkoper.checkLogin(n, p)) {
-				System.out.println("\nEnter the correct login details");
+			if(LoginServices.checkLogin(n, p)) {
+				correct=false;
+				Menu.menu(LoginServices.role);
 			}
 			else {
-				correct=false;
-				Menu.menu(Checkoper.role);
+				System.out.println("\nEnter the correct login details");
 			}
     	}
  

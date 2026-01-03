@@ -4,33 +4,20 @@ package com.employees.utils;
 import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.employees.controller.Menu;
 import com.employees.model.Employee;
-import com.employees.services.Checkoper;
+import com.employees.services.LoginServices;
 
 public class Utils {
 
-	public static final File file= new File("output.json");
-
-//    static {
-//        try {
-//            File jarFile = new File(
-//                    Utils.class.getProtectionDomain()
-//                            .getCodeSource()
-//                            .getLocation()
-//                            .toURI()
-//            );
-//
-//            File jarDir = jarFile.getParentFile();
-//            file = new File(jarDir, "output.json");
-//
-//        } catch (Exception e) {
-//            throw new RuntimeException("Failed to locate JSON file", e);
-//        }
-//    }
+	public static final File file = new File("output.json");
+	public static String pass = "admin";
 	// hash passwords
 	public static String hashPass(String pass) {
 
@@ -57,20 +44,40 @@ public class Utils {
 		}
 	}
 
+//	public static void validateDOB(String dob, Employee emp) {
+//		String[] birth = dob.split("-");
+//		if (birth.length != 3) {
+//			System.out.println("Invalid date format");
+//		}
+//		int date = Integer.parseInt(birth[0]);
+//		int month = Integer.parseInt(birth[1]);
+//		int year = Integer.parseInt(birth[2]);
+//		if ((date > 31 || date < 1) || (month < 1 || month > 12) || (year > 2005 || year < 1990)) {
+//			System.out.println("Invalid DOB");
+//			System.out.println();
+//			Menu.menu(LoginServices.role);
+//		}
+//		emp.setDOB(dob);
+//	}
+	
+	
 	public static void validateDOB(String dob, Employee emp) {
-		String[] birth = dob.split("-");
-		if (birth.length != 3) {
+		try {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			LocalDate dateOfBirth = LocalDate.parse(dob, formatter);
+
+			// Optional: validate year range
+			int year = dateOfBirth.getYear();
+			if (year < 1990 || year > 2005) {
+				System.out.println("Invalid DOB: year must be between 1990 and 2005");
+				Menu.menu(LoginServices.role);
+				return;
+			}
+			emp.setDOB(dob);
+		} catch (DateTimeParseException e) {
 			System.out.println("Invalid date format");
+			Menu.menu(LoginServices.role);
 		}
-		int date = Integer.parseInt(birth[0]);
-		int month = Integer.parseInt(birth[1]);
-		int year = Integer.parseInt(birth[2]);
-		if ((date > 31 || date < 1) || (month < 1 || month > 12) || (year > 2005 || year < 1990)) {
-			System.out.println("Invalid DOB");
-			System.out.println();
-			Menu.menu(Checkoper.role);
-		}
-		emp.setDOB(dob);
 	}
 
 	public static void validateMail(String email, Employee emp) {
@@ -78,10 +85,9 @@ public class Utils {
 		Matcher matcher = emailPattern.matcher(email);
 		if (!matcher.matches()) {
 			System.out.println("Invalid email id");
-			Menu.menu(Checkoper.role);
+			Menu.menu(LoginServices.role);
 		}
 		emp.setEmail(email);
 	}
 
 }
-

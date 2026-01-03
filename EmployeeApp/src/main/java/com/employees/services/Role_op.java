@@ -11,6 +11,8 @@ import com.employees.model.Employee;
 import com.employees.utils.Utils;
 
 public class Role_op {
+	
+	// 
 	public void grantRole() {
 		Employee employee = new Employee();
 		Scanner sc = new Scanner(System.in);
@@ -22,7 +24,7 @@ public class Role_op {
 		}
 			System.out.print("Enter the id to grant role: ");
 			String id = sc.next();
-			if (Checkoper.checkExists(id)) {
+			if (LoginServices.checkExists(id)) {
 				employee.setId(id);
 			} else {
 				System.out.println("Employee with id:" + id + " does not exist");
@@ -43,6 +45,8 @@ public class Role_op {
 		dao.grantRole(id, role);
             
 	}
+	
+	// 
 	public void revokeRole() {
 		Employee employee = new Employee();
 		Scanner sc = new Scanner(System.in);
@@ -54,7 +58,7 @@ public class Role_op {
 		}
 			System.out.print("Enter the id to revoke role: ");
 			String id = sc.next();
-			if (Checkoper.checkExists(id)) {
+			if (LoginServices.checkExists(id)) {
 				employee.setId(id);
 			} else {
 				System.out.println("Employee with id:" + id + " does not exist");
