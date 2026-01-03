@@ -1,10 +1,11 @@
 package com.employees.controller;
 
-//login page for Admin
 import java.util.Scanner;
 
-import com.employees.services.LoginServices;
+import com.employees.dao.LoginServices;
+
 public class Login {
+	//login page for admin
     public static void start() 
     {
     	Scanner sc = new Scanner(System.in);

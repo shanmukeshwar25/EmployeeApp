@@ -14,26 +14,26 @@ import org.json.simple.parser.ParseException;
 import com.employees.utils.Utils;
 
 public class AutoID {
-	static int count = 0;
+	static int ID = 0;
 	public static int autoId() {
 		JSONParser parser = new JSONParser();
 		try {
 			Object emps = parser.parse(new BufferedReader(new FileReader(Utils.file)));
 			JSONArray arr = (JSONArray) emps;
 			if (arr.size() == 0) {
-				count++;
+				ID++;
 			} else {
 				JSONObject obj = (JSONObject) (arr.get(arr.size() - 1));
 				String s = (String) obj.get("id");
 				if(s!=null && s.startsWith("EMP") && s.length()>3) {
 					int no = Integer.parseInt(s.substring(3));
-					count=no+1;
+					ID=no+1;
 				}
 				else {
-					count=1;
+					ID=1;
 				}
 			}
-			return count;
+			return ID;
 		}
 		catch (IOException e) {
 			System.out.println("error");
@@ -41,7 +41,7 @@ public class AutoID {
 		} catch (ParseException e) {
 			System.out.println("parsing falied");
 		}
-		return count;
+		return ID;
 	}
 }
 

@@ -1,33 +1,28 @@
-
-
 package com.employees.dao;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Scanner;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import com.employees.model.Employee;
 import com.employees.utils.Utils;
 
 public class EmpDAOImp implements EmpDAO {
 
-	
+	// show the employee data
 	private void printEmp(JSONObject emp) {
 		System.out.println("ID:" + emp.get("id") + "|  Name: " + emp.get("name") + "  |  DOB: " + emp.get("dob")
 				+ "  |  Address: " + emp.get("address") + "  |  Email: " + emp.get("email") + "  |  Role: " + emp.get("role")
 				+ "  |  Department : " + emp.get("department"));
 	}
 
+	// write a JSONArray to file 
 	private void savetoFile(JSONArray arr) throws IOException {
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(Utils.file))) {
 			writer.write(arr.toJSONString());
@@ -37,10 +32,10 @@ public class EmpDAOImp implements EmpDAO {
 
 	}
 
-	public void putdata(String id, String name, String pass, String dob, String address, String email,
+	// adding new employee tooutput.json file
+	public void addEmp(String id, String name, String pass, String dob, String address, String email,
 			List<String> role, String depname) {
 		JSONArray arr = new JSONArray();
-		JSONParser parser = new JSONParser();
 		try {
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("id", id);
@@ -52,8 +47,7 @@ public class EmpDAOImp implements EmpDAO {
 			jsonObject.put("role", role);
 			jsonObject.put("department", depname);
 			if (Utils.file.exists() && Utils.file.length() > 0) {
-				Object obj = parser.parse(new FileReader(Utils.file));
-				arr = (JSONArray) obj;
+				arr = LoginServices.readEmployeeData();
 			}
 			arr.add(jsonObject);
 			savetoFile(arr);
@@ -63,12 +57,11 @@ public class EmpDAOImp implements EmpDAO {
 		}
 	}
 
+	//deleting employee from output.json file
 	public void deleteId(String id) {
-		JSONParser parser = new JSONParser();
 		try {
-			Object emps = parser.parse(new BufferedReader(new FileReader(Utils.file)));
+			JSONArray arr = LoginServices.readEmployeeData();
 			int ind = -1;
-			JSONArray arr = (JSONArray) emps;
 			for (int i = 0; i < arr.size(); i++) {
 				JSONObject emp = (JSONObject) arr.get(i);
 				if (emp.get("id").equals(id)) {
@@ -86,16 +79,15 @@ public class EmpDAOImp implements EmpDAO {
 		}
 	}
 
+	// show the employee details from output.json file
 	public void viewEmp() {
-		JSONParser jsonParser = new JSONParser();
 		System.out.println();
 		System.out.println("  ----------------------------");
 		System.out.println("        EMPLOYEE DETAILS ");
 		System.out.println("  ----------------------------");
 		System.out.println();
 		try {
-			Object emps = jsonParser.parse(new BufferedReader(new FileReader(Utils.file)));
-			JSONArray arr = (JSONArray) emps;
+			JSONArray arr = LoginServices.readEmployeeData();
 			for (Object o : arr) {
 				JSONObject emp = (JSONObject) o;
 				printEmp(emp);
@@ -106,11 +98,9 @@ public class EmpDAOImp implements EmpDAO {
 	}
 
 	public void viewEmpById(String id) {
-		JSONParser parser = new JSONParser();
 		try {
 			boolean present = false;
-			Object emps = parser.parse(new BufferedReader(new FileReader(Utils.file)));
-			JSONArray arr = (JSONArray) emps;
+			JSONArray arr = LoginServices.readEmployeeData();
 			for (Object o : arr) {
 				JSONObject emp = (JSONObject) o;
 				if (emp.get("id").equals(id)) {
@@ -126,13 +116,12 @@ public class EmpDAOImp implements EmpDAO {
 		}
 	}
 
+	// updating data of employee 
 	public void updatebyId(String id, String name, String DOB, String address, String email,
 			String depname) {
-		JSONParser parser = new JSONParser();
 		try {
 			boolean present = false;
-			Object emps = parser.parse(new BufferedReader(new FileReader(Utils.file)));
-			JSONArray arr = (JSONArray) emps;
+			JSONArray arr = LoginServices.readEmployeeData();
 			for (Object o : arr) {
 				JSONObject jsonObject = (JSONObject) o;
 				if (jsonObject.get("id").equals(id)) {
@@ -156,12 +145,11 @@ public class EmpDAOImp implements EmpDAO {
 
 	}
 
+	// assign new password by user
 	public void setPass(String id, String password) {
-		JSONParser parser = new JSONParser();
 		try {
 			boolean present = false;
-			Object emps = parser.parse(new BufferedReader(new FileReader(Utils.file)));
-			JSONArray arr = (JSONArray) emps;
+			JSONArray arr = LoginServices.readEmployeeData();
 			for (Object o : arr) {
 				JSONObject jsonObject = (JSONObject) o;
 				if (jsonObject.get("id").equals(id)) {
@@ -180,18 +168,18 @@ public class EmpDAOImp implements EmpDAO {
 		}
 	}
 
+	//Updates the logged-in user's address and email
 	public void updateUserbyId(String id, String address, String email) {
-		JSONParser parser = new JSONParser();
 		try {
 			boolean present = false;
-			Object emps = parser.parse(new BufferedReader(new FileReader(Utils.file)));
-			JSONArray arr = (JSONArray) emps;
+			JSONArray arr = LoginServices.readEmployeeData();
 			for (Object o : arr) {
 				JSONObject jsonObject = (JSONObject) o;
 				if (jsonObject.get("id").equals(id)) {
 					present = true;
 					jsonObject.put("address", address);
 					jsonObject.put("email", email);
+					System.out.println("Employee details updated ");
 				}
 				savetoFile(arr);
 			}
@@ -204,11 +192,10 @@ public class EmpDAOImp implements EmpDAO {
 		}
 	}
 
+	// adding new role to employee
 	public void grantRole(String id, String role) {
-		JSONParser parser = new JSONParser();
 		try {
-			Object empdata = parser.parse(new FileReader(Utils.file));
-			JSONArray arr = (JSONArray) empdata;
+			JSONArray arr = LoginServices.readEmployeeData();
 			for (Object obj : arr) {
 				JSONObject jsonObject = (JSONObject) obj;
 				String currId = (String) jsonObject.get("id");
@@ -229,11 +216,10 @@ public class EmpDAOImp implements EmpDAO {
 		}
 	}
 
+	// removing the role assigned
 	public void revokeRole(String id, String role) {
-		JSONParser parser = new JSONParser();
 		try {
-			Object empdata = parser.parse(new FileReader(Utils.file));
-			JSONArray arr = (JSONArray) empdata;
+			JSONArray arr = LoginServices.readEmployeeData();
 			for (Object obj : arr) {
 				JSONObject jsonObject = (JSONObject) obj;
 				String currId = (String) jsonObject.get("id");

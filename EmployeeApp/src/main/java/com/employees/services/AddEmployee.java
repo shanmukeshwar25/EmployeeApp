@@ -9,7 +9,7 @@ import com.employees.enums.Roles;
 import com.employees.model.Employee;
 import com.employees.utils.Utils;
 
-public class AddEmp {
+public class AddEmployee {
 
 	// adding new employee into the JSON file
 	public void addEmployee() {
@@ -62,7 +62,7 @@ public class AddEmp {
 		String depname = sc.next();
 		e.setdepName(depname);
 
-		dao.putdata(e.getId(), e.getName(), e.getPass(), e.getDOB(), e.getAddress(), e.getEmail(), e.getRole(),
+		dao.addEmp(e.getId(), e.getName(), e.getPass(), e.getDOB(), e.getAddress(), e.getEmail(), e.getRole(),
 				e.getdepName());
 		dao.viewEmp();
 

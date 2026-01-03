@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import com.employees.dao.EmpDAO;
 import com.employees.dao.EmpDAOImp;
+import com.employees.dao.LoginServices;
 import com.employees.model.Employee;
 import com.employees.utils.Utils;
 
@@ -14,6 +15,7 @@ public class UpdatebyId {
 	// updating details of specific ID
 	public void updatebyid() {
 			Scanner sc = new Scanner(System.in);
+			EmpDAO dao = new EmpDAOImp();
 			boolean valid = true;
 			String id = null;
 			Employee e = new Employee();
@@ -53,7 +55,7 @@ public class UpdatebyId {
 			e.setdepName(depname);
 
 			up.updatebyId(e.getId(), e.getName(), e.getDOB(), e.getAddress(), e.getEmail(), e.getdepName());
-			
+			dao.viewEmp();
 		} 
 
 	// Updates the logged-in user's address and email
@@ -77,7 +79,5 @@ public class UpdatebyId {
 			Utils.validateMail(email, e);
 
 			dao.updateUserbyId(id, address, email);
-			dao.viewEmp();
-			
 		} 
 	}

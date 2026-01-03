@@ -1,5 +1,3 @@
-
-
 package com.employees.services;
 
 import java.io.File;
@@ -7,12 +5,13 @@ import java.util.Scanner;
 
 import com.employees.dao.EmpDAO;
 import com.employees.dao.EmpDAOImp;
+import com.employees.dao.LoginServices;
 import com.employees.model.Employee;
 import com.employees.utils.Utils;
 
-public class Role_op {
+public class RoleManager {
 	
-	// 
+	// adding new role to employee
 	public void grantRole() {
 		Employee employee = new Employee();
 		Scanner sc = new Scanner(System.in);
@@ -46,7 +45,7 @@ public class Role_op {
             
 	}
 	
-	// 
+	// undo the role assigned
 	public void revokeRole() {
 		Employee employee = new Employee();
 		Scanner sc = new Scanner(System.in);

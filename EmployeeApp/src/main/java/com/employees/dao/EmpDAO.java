@@ -1,10 +1,9 @@
-
 package com.employees.dao;
 
 import java.util.List;
 
 public interface EmpDAO {
-	void putdata(String id,String name,String pass,String dob,String address,String email,List<String> role,String depname);
+	void addEmp(String id,String name,String pass,String dob,String address,String email,List<String> role,String depname);
 	void deleteId(String id);
 	void viewEmp();
 	void viewEmpById(String id);
