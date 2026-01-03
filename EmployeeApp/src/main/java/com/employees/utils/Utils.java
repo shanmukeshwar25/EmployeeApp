@@ -18,6 +18,7 @@ public class Utils {
 
 	public static final File file = new File("output.json");
 	public static String pass = "admin";
+	
 	// hash passwords
 	public static String hashPass(String pass) {
 
@@ -44,23 +45,8 @@ public class Utils {
 		}
 	}
 
-//	public static void validateDOB(String dob, Employee emp) {
-//		String[] birth = dob.split("-");
-//		if (birth.length != 3) {
-//			System.out.println("Invalid date format");
-//		}
-//		int date = Integer.parseInt(birth[0]);
-//		int month = Integer.parseInt(birth[1]);
-//		int year = Integer.parseInt(birth[2]);
-//		if ((date > 31 || date < 1) || (month < 1 || month > 12) || (year > 2005 || year < 1990)) {
-//			System.out.println("Invalid DOB");
-//			System.out.println();
-//			Menu.menu(LoginServices.role);
-//		}
-//		emp.setDOB(dob);
-//	}
 	
-	
+	// validating the date of birth 
 	public static void validateDOB(String dob, Employee emp) {
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -80,6 +66,7 @@ public class Utils {
 		}
 	}
 
+	// validation for email
 	public static void validateMail(String email, Employee emp) {
 		Pattern emailPattern = Pattern.compile("[A-Za-z09.]+@[A-Za-z0-9]+\\.[A-za-z]{2,4}");
 		Matcher matcher = emailPattern.matcher(email);
