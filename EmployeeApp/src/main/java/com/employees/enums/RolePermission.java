@@ -18,6 +18,7 @@ public class RolePermission {
 			   Operations.VIEWBYID,
 			   Operations.GRANT_ROLE,
 			   Operations.REVOKE_ROLE,
+			   Operations.RESET_PASSWORD,
 			   Operations.EXIT
 			   ));
 	   
