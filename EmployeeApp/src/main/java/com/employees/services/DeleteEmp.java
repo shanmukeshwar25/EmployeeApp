@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 import com.employees.dao.EmpDAO;
 import com.employees.dao.EmpDAOImp;
-import com.employees.dao.LoginServices;
+import com.employees.dao.ServerSideValidation;
 import com.employees.utils.Utils;
 
 public class DeleteEmp {
@@ -18,7 +18,7 @@ public class DeleteEmp {
 
 		System.out.print("Enter Employee ID to delete: ");
 		String id = sc.next();
-		if (!LoginServices.checkExists(id)) {
+		if (!ServerSideValidation.checkExists(id)) {
 			System.out.println("Employee with ID:" + id + " does not exists");
 			return;
 		}

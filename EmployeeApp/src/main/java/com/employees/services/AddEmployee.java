@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import com.employees.dao.EmpDAO;
 import com.employees.dao.EmpDAOImp;
+import com.employees.dao.ServerSideValidation;
 import com.employees.enums.Roles;
 import com.employees.model.Employee;
 import com.employees.utils.Utils;
@@ -15,7 +16,7 @@ public class AddEmployee {
 	public void addEmployee() {
 		Scanner sc = new Scanner(System.in);
 		EmpDAO dao = new EmpDAOImp();
-		int ID = AutoID.autoId();
+		int ID = ServerSideValidation.autoId();
 		Employee e = new Employee();
 		String id = "EMP" + ID;
 		e.setId(id);

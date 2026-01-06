@@ -11,7 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.employees.controller.Menu;
-import com.employees.dao.LoginServices;
+import com.employees.dao.ServerSideValidation;
 import com.employees.model.Employee;
 
 public class Utils {
@@ -56,13 +56,13 @@ public class Utils {
 			int year = dateOfBirth.getYear();
 			if (year < 1990 || year > 2005) {
 				System.out.println("Invalid DOB: year must be between 1990 and 2005");
-				Menu.menu(LoginServices.role);
+				Menu.menu(ServerSideValidation.role);
 				return;
 			}
 			emp.setDOB(dob);
 		} catch (DateTimeParseException e) {
 			System.out.println("Invalid date format");
-			Menu.menu(LoginServices.role);
+			Menu.menu(ServerSideValidation.role);
 		}
 	}
 
@@ -72,7 +72,7 @@ public class Utils {
 		Matcher matcher = emailPattern.matcher(email);
 		if (!matcher.matches()) {
 			System.out.println("Invalid email id");
-			Menu.menu(LoginServices.role);
+			Menu.menu(ServerSideValidation.role);
 		}
 		emp.setEmail(email);
 	}

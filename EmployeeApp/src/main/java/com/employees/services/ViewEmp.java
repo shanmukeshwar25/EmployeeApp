@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import com.employees.dao.EmpDAO;
 import com.employees.dao.EmpDAOImp;
-import com.employees.dao.LoginServices;
+import com.employees.dao.ServerSideValidation;
 
 public class ViewEmp {
 
@@ -14,11 +14,11 @@ public class ViewEmp {
 	// for viewing employees of a specific id
 	public void viewEmployeeById() {
 			String id = null;
-			if (!LoginServices.role.equals("USER")) {
+			if (!ServerSideValidation.role.equals("USER")) {
 				System.out.print("Enter the ID to view: ");
 				id = sc.next();
 			} else {
-				id = LoginServices.empid;
+				id = ServerSideValidation.empid;
 			}
 			view.viewEmpById(id);
 		} 

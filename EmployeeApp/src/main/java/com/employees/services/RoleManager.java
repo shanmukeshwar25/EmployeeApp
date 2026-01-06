@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 import com.employees.dao.EmpDAO;
 import com.employees.dao.EmpDAOImp;
-import com.employees.dao.LoginServices;
+import com.employees.dao.ServerSideValidation;
 import com.employees.model.Employee;
 import com.employees.utils.Utils;
 
@@ -23,7 +23,7 @@ public class RoleManager {
 		}
 			System.out.print("Enter the id to grant role: ");
 			String id = sc.next();
-			if (LoginServices.checkExists(id)) {
+			if (ServerSideValidation.checkExists(id)) {
 				employee.setId(id);
 			} else {
 				System.out.println("Employee with id:" + id + " does not exist");
@@ -57,7 +57,7 @@ public class RoleManager {
 		}
 			System.out.print("Enter the id to revoke role: ");
 			String id = sc.next();
-			if (LoginServices.checkExists(id)) {
+			if (ServerSideValidation.checkExists(id)) {
 				employee.setId(id);
 			} else {
 				System.out.println("Employee with id:" + id + " does not exist");

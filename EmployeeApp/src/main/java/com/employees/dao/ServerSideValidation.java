@@ -16,7 +16,7 @@ import org.json.simple.parser.ParseException;
 
 import com.employees.utils.Utils;
 
-public class LoginServices {
+public class ServerSideValidation {
 	public static String role;
 	public static String empid;
 
@@ -49,7 +49,7 @@ public class LoginServices {
 
 						Collections.sort(roles);
 
-						LoginServices.role = (String) roles.get(0);
+						ServerSideValidation.role = (String) roles.get(0);
 
 						empid = id;
 						return true;
@@ -93,4 +93,35 @@ public class LoginServices {
 		}
 		return false;
 	}
+	
+	// generating new ID
+		static int ID = 0;
+		public static int autoId() {
+			JSONParser parser = new JSONParser();
+			try {
+				Object emps = parser.parse(new BufferedReader(new FileReader(Utils.file)));
+				JSONArray arr = (JSONArray) emps;
+				if (arr.size() == 0) {
+					ID++;
+				} else {
+					JSONObject obj = (JSONObject) (arr.get(arr.size() - 1));
+					String s = (String) obj.get("id");
+					if(s!=null && s.startsWith("EMP") && s.length()>3) {
+						int no = Integer.parseInt(s.substring(3));
+						ID=no+1;
+					}
+					else {
+						ID=1;
+					}
+				}
+				return ID;
+			}
+			catch (IOException e) {
+				System.out.println("error");
+				
+			} catch (ParseException e) {
+				System.out.println("parsing falied");
+			}
+			return ID;
+		}
 }

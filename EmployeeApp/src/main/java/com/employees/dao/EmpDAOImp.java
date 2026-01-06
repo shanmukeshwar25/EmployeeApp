@@ -44,7 +44,7 @@ public class EmpDAOImp implements EmpDAO {
 			jsonObject.put("role", role);
 			jsonObject.put("department", depname);
 			if (Utils.file.exists() && Utils.file.length() > 0) {
-				arr = LoginServices.readEmployeeData();
+				arr = ServerSideValidation.readEmployeeData();
 			}
 			arr.add(jsonObject);
 			savetoFile(arr);
@@ -57,7 +57,7 @@ public class EmpDAOImp implements EmpDAO {
 	//deleting employee from output.json file
 	public void deleteId(String id) {
 		try {
-			JSONArray arr = LoginServices.readEmployeeData();
+			JSONArray arr = ServerSideValidation.readEmployeeData();
 			int ind = -1;
 			for (int i = 0; i < arr.size(); i++) {
 				JSONObject emp = (JSONObject) arr.get(i);
@@ -84,7 +84,7 @@ public class EmpDAOImp implements EmpDAO {
 		System.out.println("  ----------------------------");
 		System.out.println();
 		try {
-			JSONArray arr = LoginServices.readEmployeeData();
+			JSONArray arr = ServerSideValidation.readEmployeeData();
 			for (Object o : arr) {
 				JSONObject emp = (JSONObject) o;
 				printEmp(emp);
@@ -97,7 +97,7 @@ public class EmpDAOImp implements EmpDAO {
 	public void viewEmpById(String id) {
 		try {
 			boolean present = false;
-			JSONArray arr = LoginServices.readEmployeeData();
+			JSONArray arr = ServerSideValidation.readEmployeeData();
 			for (Object o : arr) {
 				JSONObject emp = (JSONObject) o;
 				if (emp.get("id").equals(id)) {
@@ -118,7 +118,7 @@ public class EmpDAOImp implements EmpDAO {
 			String depname) {
 		try {
 			boolean present = false;
-			JSONArray arr = LoginServices.readEmployeeData();
+			JSONArray arr = ServerSideValidation.readEmployeeData();
 			for (Object o : arr) {
 				JSONObject jsonObject = (JSONObject) o;
 				if (jsonObject.get("id").equals(id)) {
@@ -146,7 +146,7 @@ public class EmpDAOImp implements EmpDAO {
 	public void setPass(String id, String password) {
 		try {
 			boolean present = false;
-			JSONArray arr = LoginServices.readEmployeeData();
+			JSONArray arr = ServerSideValidation.readEmployeeData();
 			for (Object o : arr) {
 				JSONObject jsonObject = (JSONObject) o;
 				if (jsonObject.get("id").equals(id)) {
@@ -169,7 +169,7 @@ public class EmpDAOImp implements EmpDAO {
 	public void updateUserbyId(String id, String address, String email) {
 		try {
 			boolean present = false;
-			JSONArray arr = LoginServices.readEmployeeData();
+			JSONArray arr = ServerSideValidation.readEmployeeData();
 			for (Object o : arr) {
 				JSONObject jsonObject = (JSONObject) o;
 				if (jsonObject.get("id").equals(id)) {
@@ -192,7 +192,7 @@ public class EmpDAOImp implements EmpDAO {
 	// adding new role to employee
 	public void grantRole(String id, String role) {
 		try {
-			JSONArray arr = LoginServices.readEmployeeData();
+			JSONArray arr = ServerSideValidation.readEmployeeData();
 			for (Object obj : arr) {
 				JSONObject jsonObject = (JSONObject) obj;
 				String currId = (String) jsonObject.get("id");
@@ -216,7 +216,7 @@ public class EmpDAOImp implements EmpDAO {
 	// removing the role assigned
 	public void revokeRole(String id, String role) {
 		try {
-			JSONArray arr = LoginServices.readEmployeeData();
+			JSONArray arr = ServerSideValidation.readEmployeeData();
 			for (Object obj : arr) {
 				JSONObject jsonObject = (JSONObject) obj;
 				String currId = (String) jsonObject.get("id");

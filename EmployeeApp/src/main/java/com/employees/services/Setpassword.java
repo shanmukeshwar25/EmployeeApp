@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 import com.employees.dao.EmpDAO;
 import com.employees.dao.EmpDAOImp;
-import com.employees.dao.LoginServices;
+import com.employees.dao.ServerSideValidation;
 import com.employees.utils.Utils;
 
 public class Setpassword {
@@ -14,7 +14,7 @@ public class Setpassword {
 	public void setPass() {
 		EmpDAO dao = new EmpDAOImp();
 		Scanner sc = new Scanner(System.in);
-		String id = LoginServices.empid;
+		String id = ServerSideValidation.empid;
 		boolean checkpass = false;
 		while (!checkpass) {
 			System.out.print("Enter new password: ");

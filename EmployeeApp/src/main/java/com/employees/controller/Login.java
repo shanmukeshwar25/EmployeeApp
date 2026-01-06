@@ -2,7 +2,7 @@ package com.employees.controller;
 
 import java.util.Scanner;
 
-import com.employees.dao.LoginServices;
+import com.employees.dao.ServerSideValidation;
 
 public class Login {
 	//login page for admin
@@ -19,9 +19,9 @@ public class Login {
 			String n = sc.next();
 			System.out.print("Enter the registered password: ");
 			String p = sc.next();
-			if(LoginServices.checkLogin(n, p)) {
+			if(ServerSideValidation.checkLogin(n, p)) {
 				correct=false;
-				Menu.menu(LoginServices.role);
+				Menu.menu(ServerSideValidation.role);
 			}
 			else {
 				System.out.println("\nEnter the correct login details");

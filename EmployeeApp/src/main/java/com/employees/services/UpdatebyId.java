@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 import com.employees.dao.EmpDAO;
 import com.employees.dao.EmpDAOImp;
-import com.employees.dao.LoginServices;
+import com.employees.dao.ServerSideValidation;
 import com.employees.model.Employee;
 import com.employees.utils.Utils;
 
@@ -22,7 +22,7 @@ public class UpdatebyId {
 			while (valid) {
 				System.out.print("Enter Employee ID to update: ");
 				id = sc.next();
-				if (!LoginServices.checkExists(id)) {
+				if (!ServerSideValidation.checkExists(id)) {
 					System.out.println("Employee with ID:" + id + " does not exists" + " enter the valid ID");
 				} else {
 					e.setId(id);
@@ -60,8 +60,8 @@ public class UpdatebyId {
 
 	// Updates the logged-in user's address and email
 	public void updateUserbyid() {
-			String id = LoginServices.empid;
-			if (!LoginServices.checkExists(id)) {
+			String id = ServerSideValidation.empid;
+			if (!ServerSideValidation.checkExists(id)) {
 				System.out.println("Employee with ID:" + id + " does not exists");
 				return;
 			}
