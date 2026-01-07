@@ -1,12 +1,14 @@
 package com.employees.dao;
 
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
 import com.employees.utils.Utils;
 
@@ -49,8 +51,12 @@ public class EmpDAOImp implements EmpDAO {
 			arr.add(jsonObject);
 			savetoFile(arr);
 			System.out.println("Employee added succesfully");
-		} catch (Exception e) {
-			System.out.println("Error");
+		} catch (FileNotFoundException e) {
+			System.out.println("file is not found");
+		} catch (IOException e) {
+			System.out.println("I/O error occured while reading the file");
+		} catch (ParseException e) {
+			System.out.println("error parsing employee data");
 		}
 	}
 
@@ -63,21 +69,27 @@ public class EmpDAOImp implements EmpDAO {
 				JSONObject emp = (JSONObject) arr.get(i);
 				if (emp.get("id").equals(id)) {
 					ind = i;
-					System.out.println("Employee with ID:" + id + " deleted sucessfully");
 					break;
 				}
 			}
-			if (ind != -1) {
-				arr.remove(ind);
+			if (ind == -1) {
+				  System.out.println("Employee with ID " + id + " not found");
+		            return;
 			}
+			arr.remove(ind);
 			savetoFile(arr);
-		} catch (Exception e) {
-			System.out.println("Error");
+			System.out.println("Employee with ID:" + id + " deleted sucessfully");
+		} catch (FileNotFoundException e) {
+			System.out.println("file is not found");
+		} catch (IOException e) {
+			System.out.println("I/O error occured while reading the file");
+		} catch (ParseException e) {
+			System.out.println("error parsing employee data");
 		}
 	}
 
 	// show the employee details from output.json file
-	public void viewEmp() {
+	public boolean viewEmp() {
 		System.out.println();
 		System.out.println("  ----------------------------");
 		System.out.println("        EMPLOYEE DETAILS ");
@@ -85,13 +97,22 @@ public class EmpDAOImp implements EmpDAO {
 		System.out.println();
 		try {
 			JSONArray arr = ServerSideValidation.readEmployeeData();
+			if(arr==null || arr.isEmpty()) {
+				return false;
+			}
 			for (Object o : arr) {
 				JSONObject emp = (JSONObject) o;
 				printEmp(emp);
 			}
-		} catch (Exception e) {
-			System.out.println("Error");
+			return true;
+		} catch (FileNotFoundException e) {
+			System.out.println("file is not found");
+		} catch (IOException e) {
+			System.out.println("I/O error occured while reading the file");
+		} catch (ParseException e) {
+			System.out.println("error parsing employee data");
 		}
+		return false;
 	}
 
 	public void viewEmpById(String id) {
@@ -108,8 +129,12 @@ public class EmpDAOImp implements EmpDAO {
 			if (!present) {
 				System.out.println("no employee found");
 			}
-		} catch (Exception e) {
-			System.out.println("Error");
+		} catch (FileNotFoundException e) {
+			System.out.println("file is not found");
+		} catch (IOException e) {
+			System.out.println("I/O error occured while reading the file");
+		} catch (ParseException e) {
+			System.out.println("error parsing employee data");
 		}
 	}
 
@@ -136,8 +161,12 @@ public class EmpDAOImp implements EmpDAO {
 			if (!present) {
 				System.out.println("no employee found in the file");
 			}
-		} catch (Exception e) {
-			System.out.println("Error");
+		} catch (FileNotFoundException e) {
+			System.out.println("file is not found");
+		} catch (IOException e) {
+			System.out.println("I/O error occured while reading the file");
+		} catch (ParseException e) {
+			System.out.println("error parsing employee data");
 		}
 
 	}
@@ -160,8 +189,12 @@ public class EmpDAOImp implements EmpDAO {
 			if (!present) {
 				System.out.println("no employee found in the file");
 			}
-		} catch (Exception e) {
-			System.out.println("Error");
+		} catch (FileNotFoundException e) {
+			System.out.println("file is not found");
+		} catch (IOException e) {
+			System.out.println("I/O error occured while reading the file");
+		} catch (ParseException e) {
+			System.out.println("error parsing employee data");
 		}
 	}
 
@@ -184,8 +217,12 @@ public class EmpDAOImp implements EmpDAO {
 			if (!present) {
 				System.out.println("no employee found in the file");
 			}
-		} catch (Exception e) {
-			System.out.println("Error");
+		} catch (FileNotFoundException e) {
+			System.out.println("file is not found");
+		} catch (IOException e) {
+			System.out.println("I/O error occured while reading the file");
+		} catch (ParseException e) {
+			System.out.println("error parsing employee data");
 		}
 	}
 
@@ -208,8 +245,12 @@ public class EmpDAOImp implements EmpDAO {
 			}
 			savetoFile(arr);
 
-		} catch (Exception e) {
-			System.out.println("Error");
+		} catch (FileNotFoundException e) {
+			System.out.println("file is not found");
+		} catch (IOException e) {
+			System.out.println("I/O error occured while reading the file");
+		} catch (ParseException e) {
+			System.out.println("error parsing employee data");
 		}
 	}
 
@@ -232,8 +273,12 @@ public class EmpDAOImp implements EmpDAO {
 			}
 			savetoFile(arr);
 
-		} catch (Exception e) {
-			System.out.println("Error");
+		} catch (FileNotFoundException e) {
+			System.out.println("file is not found");
+		} catch (IOException e) {
+			System.out.println("I/O error occured while reading the file");
+		} catch (ParseException e) {
+			System.out.println("error parsing employee data");
 		}
 	}
 }

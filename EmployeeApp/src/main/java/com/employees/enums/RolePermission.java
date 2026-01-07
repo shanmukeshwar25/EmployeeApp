@@ -3,6 +3,7 @@ package com.employees.enums;
 
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -35,7 +36,8 @@ public class RolePermission {
 			   Operations.UPDATE));
    }
    public  boolean hasAccess(String role,Operations operation) {
+
  		return map.get(role).contains(operation);	
-  }
+   }
 }
 

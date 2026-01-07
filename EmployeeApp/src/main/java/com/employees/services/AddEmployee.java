@@ -32,18 +32,32 @@ public class AddEmployee {
 
 		e.setPass(Utils.hashPass(Utils.pass));
 
-		System.out.print("Enter the date of birth (dd-MM-yyyy) : ");
-		String dob = sc.next();
-		Utils.validateDOB(dob, e);
+		boolean validob = false;
+		while(!validob) {
+			System.out.print("Enter the date of birth (dd-MM-yyyy) : ");
+			String dob = sc.next();
+			if(Utils.validateDOB(dob, e)) {
+				validob=true;
+				e.setDOB(dob);
+			}
+		}
 
 		System.out.print("Enter Address: ");
 		String address = sc.next();
 		e.setAddress(address);
+		
+		
+		boolean validmail=false;
+		while(!validmail) {
+			System.out.print("Enter email: ");
+			String email = sc.next();
+			if(Utils.validateMail(email, e)) {
+				validmail=true;
+				e.setEmail(email);
+			}
+		}
 
-		System.out.print("Enter email: ");
-		String email = sc.next();
-		Utils.validateMail(email, e);
-
+		
 		boolean valid = false;
 		while (!valid) {
 			System.out.print("Available roles : ");

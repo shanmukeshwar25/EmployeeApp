@@ -47,7 +47,7 @@ public class Utils {
 
 	
 	// validating the date of birth 
-	public static void validateDOB(String dob, Employee emp) {
+	public static boolean validateDOB(String dob, Employee emp) {
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 			LocalDate dateOfBirth = LocalDate.parse(dob, formatter);
@@ -56,25 +56,24 @@ public class Utils {
 			int year = dateOfBirth.getYear();
 			if (year < 1990 || year > 2005) {
 				System.out.println("Invalid DOB: year must be between 1990 and 2005");
-				Menu.menu(ServerSideValidation.role);
-				return;
+				return false;
 			}
-			emp.setDOB(dob);
+			return true;
 		} catch (DateTimeParseException e) {
 			System.out.println("Invalid date format");
-			Menu.menu(ServerSideValidation.role);
+			return false;
 		}
 	}
 
 	// validation for email
-	public static void validateMail(String email, Employee emp) {
+	public static boolean validateMail(String email, Employee emp) {
 		Pattern emailPattern = Pattern.compile("[A-Za-z09.]+@[A-Za-z0-9]+\\.[A-za-z]{2,4}");
 		Matcher matcher = emailPattern.matcher(email);
 		if (!matcher.matches()) {
 			System.out.println("Invalid email id");
-			Menu.menu(ServerSideValidation.role);
+			return false;
 		}
-		emp.setEmail(email);
+		return true;
 	}
 
 }

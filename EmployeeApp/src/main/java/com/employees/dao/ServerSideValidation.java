@@ -8,12 +8,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.employees.enums.Roles;
 import com.employees.utils.Utils;
 
 public class ServerSideValidation {
@@ -42,7 +44,7 @@ public class ServerSideValidation {
 						System.out.println();
 
 						List<String> priority = Arrays.asList("ADMIN", "MANAGER", "USER");
-						List<String> roles = (List<String>) obj.get("role");
+						List<String>  roles = (List<String>) obj.get("role");
 
 						roles.sort((r1, r2) -> Integer.compare(priority.indexOf(r1.toUpperCase()),
 								priority.indexOf(r2.toUpperCase())));
@@ -52,6 +54,7 @@ public class ServerSideValidation {
 						ServerSideValidation.role = (String) roles.get(0);
 
 						empid = id;
+						
 						return true;
 					} else {
 						System.out.println("Incorrect credentails");
@@ -74,7 +77,6 @@ public class ServerSideValidation {
 
 	// checking if that user exists or not
 	public static boolean checkExists(String id) {
-		JSONParser parser = new JSONParser();
 		try {
 			JSONArray arr = readEmployeeData();
 			for (Object o : arr) {
@@ -97,10 +99,8 @@ public class ServerSideValidation {
 	// generating new ID
 		static int ID = 0;
 		public static int autoId() {
-			JSONParser parser = new JSONParser();
 			try {
-				Object emps = parser.parse(new BufferedReader(new FileReader(Utils.file)));
-				JSONArray arr = (JSONArray) emps;
+				JSONArray arr = readEmployeeData();
 				if (arr.size() == 0) {
 					ID++;
 				} else {

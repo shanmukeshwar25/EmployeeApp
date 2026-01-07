@@ -5,7 +5,7 @@ import java.util.List;
 public interface EmpDAO {
 	void addEmp(String id,String name,String pass,String dob,String address,String email,List<String> role,String depname);
 	void deleteId(String id);
-	void viewEmp();
+	boolean viewEmp();
 	void viewEmpById(String id);
 	void updatebyId(String id,String name,String DOB,String address,String email,String depname);
 	void setPass(String id,String password);

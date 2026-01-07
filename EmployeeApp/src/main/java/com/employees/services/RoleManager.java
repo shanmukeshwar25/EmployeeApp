@@ -14,10 +14,9 @@ public class RoleManager {
 	// adding new role to employee
 	public void grantRole() {
 		Employee employee = new Employee();
-		Scanner sc = new Scanner(System.in);
+		try(Scanner sc = new Scanner(System.in)){
         
-		File file = new File("output.json");
-		if (file.exists() && file.length() <= 2) {
+		if (Utils.file.exists() && Utils.file.length() <= 2) {
 			System.out.println("no employees found");
 			return;
 		}
@@ -42,6 +41,10 @@ public class RoleManager {
 			}
 		EmpDAO dao = new EmpDAOImp();
 		dao.grantRole(id, role);
+		}
+		catch (Exception e) {
+	        System.out.println("Something went wrong. Please try again.");
+	    }
             
 	}
 	
@@ -50,8 +53,7 @@ public class RoleManager {
 		Employee employee = new Employee();
 		Scanner sc = new Scanner(System.in);
         
-		File file = new File("output.json");
-		if (file.exists() && file.length() <= 2) {
+		if (Utils.file.exists() && Utils.file.length() <= 2) {
 			System.out.println("no employees found");
 			return;
 		}
