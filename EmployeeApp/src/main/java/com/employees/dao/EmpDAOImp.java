@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -106,11 +108,11 @@ public class EmpDAOImp implements EmpDAO {
 			}
 			return true;
 		} catch (FileNotFoundException e) {
-			System.out.println("file is not found");
+			System.out.println("file is not found "+e.getMessage());
 		} catch (IOException e) {
-			System.out.println("I/O error occured while reading the file");
+			System.out.println("I/O error occured while reading the file "+e.getMessage());
 		} catch (ParseException e) {
-			System.out.println("error parsing employee data");
+			System.out.println("error parsing employee data "+e.getMessage());
 		}
 		return false;
 	}
@@ -130,12 +132,12 @@ public class EmpDAOImp implements EmpDAO {
 				System.out.println("no employee found");
 			}
 		} catch (FileNotFoundException e) {
-			System.out.println("file is not found");
+			System.out.println("file is not found "+e.getMessage());
 		} catch (IOException e) {
-			System.out.println("I/O error occured while reading the file");
+			System.out.println("I/O error occured while reading the file "+e.getMessage());
 		} catch (ParseException e) {
-			System.out.println("error parsing employee data");
-		}
+			System.out.println("error parsing employee data "+e.getMessage());
+		} 
 	}
 
 	// updating data of employee 
@@ -162,11 +164,11 @@ public class EmpDAOImp implements EmpDAO {
 				System.out.println("no employee found in the file");
 			}
 		} catch (FileNotFoundException e) {
-			System.out.println("file is not found");
+			System.out.println("file is not found "+e.getMessage());
 		} catch (IOException e) {
-			System.out.println("I/O error occured while reading the file");
+			System.out.println("I/O error occured while reading the file "+e.getMessage());
 		} catch (ParseException e) {
-			System.out.println("error parsing employee data");
+			System.out.println("error parsing employee data "+e.getMessage());
 		}
 
 	}
@@ -187,14 +189,14 @@ public class EmpDAOImp implements EmpDAO {
 			}
 
 			if (!present) {
-				System.out.println("no employee found in the file");
+				System.out.println("no employee found in the file ");
 			}
 		} catch (FileNotFoundException e) {
-			System.out.println("file is not found");
+			System.out.println("file is not found "+e.getMessage());
 		} catch (IOException e) {
-			System.out.println("I/O error occured while reading the file");
+			System.out.println("I/O error occured while reading the file "+e.getMessage());
 		} catch (ParseException e) {
-			System.out.println("error parsing employee data");
+			System.out.println("error parsing employee data "+e.getMessage());
 		}
 	}
 
@@ -218,11 +220,11 @@ public class EmpDAOImp implements EmpDAO {
 				System.out.println("no employee found in the file");
 			}
 		} catch (FileNotFoundException e) {
-			System.out.println("file is not found");
+			System.out.println("file is not found "+e.getMessage());
 		} catch (IOException e) {
-			System.out.println("I/O error occured while reading the file");
+			System.out.println("I/O error occured while reading the file "+e.getMessage());
 		} catch (ParseException e) {
-			System.out.println("error parsing employee data");
+			System.out.println("error parsing employee data "+e.getMessage());
 		}
 	}
 
@@ -246,11 +248,11 @@ public class EmpDAOImp implements EmpDAO {
 			savetoFile(arr);
 
 		} catch (FileNotFoundException e) {
-			System.out.println("file is not found");
+			System.out.println("file is not found "+e.getMessage());
 		} catch (IOException e) {
-			System.out.println("I/O error occured while reading the file");
+			System.out.println("I/O error occured while reading the file "+e.getMessage());
 		} catch (ParseException e) {
-			System.out.println("error parsing employee data");
+			System.out.println("error parsing employee data "+e.getMessage());
 		}
 	}
 
@@ -274,13 +276,65 @@ public class EmpDAOImp implements EmpDAO {
 			savetoFile(arr);
 
 		} catch (FileNotFoundException e) {
-			System.out.println("file is not found");
+			System.out.println("file is not found "+e.getMessage());
 		} catch (IOException e) {
-			System.out.println("I/O error occured while reading the file");
+			System.out.println("I/O error occured while reading the file "+e.getMessage());
 		} catch (ParseException e) {
-			System.out.println("error parsing employee data");
+			System.out.println("error parsing employee data "+e.getMessage());
 		}
 	}
+
+	@Override
+	public void addEmp(String name, String pass, String dob, String address, String email, List<String> role,
+			String depname) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	// validating the login credentials 
+		public boolean checkLogin(String id, String p) {
+			try {
+				JSONArray arr = ServerSideValidation.readEmployeeData();
+				for (Object o : arr) {
+					JSONObject obj = (JSONObject) o;
+					if (obj.get("id").equals(id)) {
+						String hashp = Utils.hashPass(p);
+						if (obj.get("password").equals(hashp)) {
+
+							System.out.println("You are a valid User");
+							System.out.println();
+
+							List<String> priority = Arrays.asList("ADMIN", "MANAGER", "USER");
+							List<String>  roles = (List<String>) obj.get("role");
+
+							roles.sort((r1, r2) -> Integer.compare(priority.indexOf(r1.toUpperCase()),
+									priority.indexOf(r2.toUpperCase())));
+
+							Collections.sort(roles);
+
+							ServerSideValidation.role = (String) roles.get(0);
+
+							ServerSideValidation.empid = id;
+							
+							return true;
+						} else {
+							System.out.println("Incorrect credentails");
+							return false;
+						}
+					}
+
+				}
+				System.out.println("Incorrect credentails");
+				return false;
+			} catch (FileNotFoundException e) {
+				System.out.println("file is not found");
+			} catch (IOException e) {
+				System.out.println("I/O error occured while reading the file");
+			} catch (ParseException e) {
+				System.out.println("error parsing employee data");
+			}
+			return false;
+		}
 }
 
 

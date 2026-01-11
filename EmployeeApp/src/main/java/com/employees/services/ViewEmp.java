@@ -5,7 +5,6 @@ import java.util.Scanner;
 import com.employees.dao.EmpDAO;
 import com.employees.dao.EmpDAOImp;
 import com.employees.dao.ServerSideValidation;
-import com.employees.exception.EmployeeDoesNotExistException;
 
 public class ViewEmp {
 
@@ -24,13 +23,6 @@ public class ViewEmp {
 		}
 		
 		dao.viewEmpById(id);
-//		boolean present = ServerSideValidation.checkExists(id);
-//		
-//		if (present) {
-//			dao.viewEmpById(id);
-//		} else {
-//			throw new EmployeeDoesNotExistException("Employee does not exist");
-//		}
 	}
 
 	// viewing all employees

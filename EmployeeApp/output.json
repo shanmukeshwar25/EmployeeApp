@@ -34,5 +34,17 @@
 		"id": "EMP2",
 		"department": "dev",
 		"email": "beem@gmail.com"
+	},
+	{
+		"password": "fd78e1a76a0a278493aa56f024f24e2444a7ef08697ef43017652ab5",
+		"address": "hyd",
+		"role": [
+			"USER"
+		],
+		"dob": "12-12-2001",
+		"name": "rrrr rrr",
+		"id": "EMP3",
+		"department": "dev",
+		"email": "ra@gmail.com"
 	}
 ]

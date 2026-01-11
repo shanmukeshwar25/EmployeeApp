@@ -17,7 +17,7 @@ import com.employees.model.Employee;
 public class Utils {
 
 	public static final File file = new File("output.json");
-	public static String pass = "admin";
+//	public static String pass = "admin";
 	
 	// hash passwords
 	public static String hashPass(String pass) {

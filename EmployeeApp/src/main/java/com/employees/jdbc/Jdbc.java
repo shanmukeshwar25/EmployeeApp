@@ -24,6 +24,8 @@ public class Jdbc {
 
 			Connection con = DriverManager.getConnection(url, username, password);
 			
+			con.setAutoCommit(false);
+			
 			// print the table 
 			Statement stat = con.createStatement();
 			String query = "select * from employee";
@@ -61,19 +63,84 @@ public class Jdbc {
 //			System.out.println("no of rows updated: "+rowaffected);
 			
 			// delete query
-			String deletequery = "delete from employee where id=?";
-			System.out.print("Enter the id: ");
-			int id2 = sc.nextInt();
-			PreparedStatement psdel = con.prepareStatement(deletequery);
-			psdel.setInt(1, id2);
+//			String deletequery = "delete from employee where id=?";
+//			System.out.print("Enter the id: ");
+//			int id2 = sc.nextInt();
+//			PreparedStatement psdel = con.prepareStatement(deletequery);
+//			psdel.setInt(1, id2);
+//			
+//			int r = psdel.executeUpdate();
+//			System.out.println("deleted: "+r);
 			
-			int r = psdel.executeUpdate();
-			System.out.println("deleted: "+r);
-					
+			// insert into table
+//			String insert_record = "insert into employee (id, name, age) VALUES (?, ?, ?)";
+//			PreparedStatement insert_stat = con.prepareStatement(insert_record);
+//			System.out.print("Enter the id: ");
+//			int id = sc.nextInt();
+//			insert_stat.setInt(1,id);
+//			System.out.print("Enter the new name : ");
+//			sc.nextLine();
+//			String name = sc.nextLine();
+//			insert_stat.setString(2,name);
+//			System.out.print("Enter the age : ");
+//			int age = sc.nextInt();
+//			insert_stat.setInt(3, age);
+//			int rows=insert_stat.executeUpdate();
+//			System.out.println(rows);
+//			ResultSet rs1 = stat.executeQuery(query);
+//
+//			while (rs1.next()) {
+//				System.out.println("id: " + rs1.getInt("id") + " name: " + rs1.getString("name") + " age: "
+//						+ rs1.getInt("age"));
+//			}
+//			System.out.println();
+			
+			// batch processing 
+			
+			// insert multiple records into table
+			String insert_record = "insert into employee (id, name, age) VALUES (?, ?, ?)";
+			PreparedStatement insert_stat = con.prepareStatement(insert_record);
+			System.out.println("how many employees do you want to add: ");
+			int count = sc.nextInt();
+			for(int i=1;i<=count;i++) {
+				System.out.print("Enter the id: ");
+				int id = sc.nextInt();
+				insert_stat.setInt(1,id);
+				System.out.print("Enter the new name : ");
+				sc.nextLine();
+				String name = sc.nextLine();
+				insert_stat.setString(2,name);
+				System.out.print("Enter the age : ");
+				int age = sc.nextInt();
+				insert_stat.setInt(3, age);
+				insert_stat.addBatch();
+			}
+			
+			int[] result = insert_stat.executeBatch();
+			con.commit();
+			System.out.println("sucesfulty inserted "+result.length);
+			
+			
+			// update employee
+//			String query1 = "SELECT * FROM employee WHERE id = ?;";
+//			System.out.println("Enter the id : ");
+//			int id1 = sc.nextInt();
+//			PreparedStatement pstat = con.prepareStatement(query1);
+//			pstat.setInt(1, id1);
+//			
+//			ResultSet rsup = pstat.executeQuery();
+//			pstat.addBatch();
+//			
+//			if(rsup.next()) {
+//				System.out.println("id: " + rsup.getInt("id") + " name: " + rsup.getString("name") + " age: "
+//						+ rsup.getInt("age"));
+//			}
+			
+			
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 	}
 }

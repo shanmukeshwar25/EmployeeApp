@@ -8,14 +8,15 @@ import com.employees.dao.EmpDAOImp;
 import com.employees.dao.ServerSideValidation;
 import com.employees.enums.Roles;
 import com.employees.model.Employee;
+import com.employees.utils.GeneratePassword;
 import com.employees.utils.Utils;
 
 public class AddEmployee {
-
+	
 	// adding new employee into the JSON file
-	public void addEmployee() {
+	public void addEmployee(EmpDAO dao) {
 		Scanner sc = new Scanner(System.in);
-		EmpDAO dao = new EmpDAOImp();
+//		EmpDAO dao = new EmpDAOImp();
 		int ID = ServerSideValidation.autoId();
 		Employee e = new Employee();
 		String id = "EMP" + ID;
@@ -30,7 +31,9 @@ public class AddEmployee {
 		String name = firstname + " " + lastname;
 		e.setName(name);
 
-		e.setPass(Utils.hashPass(Utils.pass));
+		String password = "emp"+GeneratePassword.generatePassword();
+		System.out.println("the default password is : "+password);
+		e.setPass(Utils.hashPass(password));
 
 		boolean validob = false;
 		while(!validob) {
@@ -77,7 +80,7 @@ public class AddEmployee {
 		String depname = sc.next();
 		e.setdepName(depname);
 
-		dao.addEmp(e.getId(), e.getName(), e.getPass(), e.getDOB(), e.getAddress(), e.getEmail(), e.getRole(),
+		dao.addEmp(e.getName(), e.getPass(), e.getDOB(), e.getAddress(), e.getEmail(), e.getRole(),
 				e.getdepName());
 		dao.viewEmp();
 

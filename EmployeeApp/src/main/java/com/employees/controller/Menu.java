@@ -3,6 +3,7 @@ package com.employees.controller;
 
 import java.util.Scanner;
 
+import com.employees.dao.EmpDAO;
 import com.employees.dao.ServerSideValidation;
 import com.employees.enums.Operations;
 import com.employees.enums.RolePermission;
@@ -15,7 +16,7 @@ import com.employees.services.ViewEmp;
 
 // displaying the main menu for operations
 public class Menu {
-	public static void menu(String role) {
+	public static void menu(String role,EmpDAO dao) {
 		Scanner sc = new Scanner(System.in);
 		boolean enter = true;
 		AddEmployee add = new AddEmployee();
@@ -53,7 +54,7 @@ public class Menu {
 
 			if (valid_operation && rolePermission.hasAccess(role, choice)) {
 				if (choice == Operations.INSERT)
-					add.addEmployee();
+					add.addEmployee(dao);
 				else
 				if (choice == Operations.DELETE)
 					del.delete();

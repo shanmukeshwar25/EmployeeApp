@@ -6,6 +6,7 @@ import java.util.Scanner;
 import com.employees.dao.EmpDAO;
 import com.employees.dao.EmpDAOImp;
 import com.employees.dao.ServerSideValidation;
+import com.employees.utils.GeneratePassword;
 import com.employees.utils.Utils;
 
 public class Setpassword {
@@ -38,8 +39,11 @@ public class Setpassword {
 		Scanner sc = new Scanner(System.in);
 		try {
 			String id = sc.next();
-			String password = Utils.hashPass(Utils.pass);
-			dao.setPass(id, password);
+//			String password = Utils.hashPass(Utils.pass);
+			String password = "emp"+GeneratePassword.generatePassword();
+			System.out.println("the default password is : "+password);
+//			e.setPass(Utils.hashPass(password));
+			dao.setPass(id, Utils.hashPass(password));
 		} catch (NumberFormatException ex) {
 			System.out.println("Please enter only numbers for ID, Age");
 		}
