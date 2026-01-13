@@ -2,11 +2,14 @@ package com.employees.controller;
 
 
 import java.util.Scanner;
+
 import com.employees.dao.EmpDAO;
 import com.employees.dao.ServerSideValidation;
+import com.employees.model.LoginResult;
 
 public class Login {
 	//login page for admin
+	public static LoginResult result;
     public static void start(EmpDAO empdao) 
     {
     	Scanner sc = new Scanner(System.in);
@@ -17,19 +20,13 @@ public class Login {
 			System.out.println("  -----------------------------");
 			System.out.println();
 			System.out.print("Enter the registered ID: ");
-			String n = sc.next();
+			String n = sc.next().toUpperCase();
 			System.out.print("Enter the registered password: ");
 			String p = sc.next();
-//			if(ServerSideValidation.checkLogin(n, p)) {
-//				correct=false;
-//				Menu.menu(ServerSideValidation.role);
-//			}
-//			else {
-//				System.out.println("\nEnter the correct login details");
-//			}
-			if(empdao.checkLogin(n, p)) {
+			result = empdao.checkLogin(n, p);
+			if(result.getValid()) {
 				correct=false;
-				Menu.menu(ServerSideValidation.role,empdao);
+				Menu.menu(result.getRole(),empdao);
 			}
 			else {
 				System.out.println("\nEnter the correct login details");

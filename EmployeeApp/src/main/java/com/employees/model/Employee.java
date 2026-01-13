@@ -78,4 +78,8 @@ public class Employee {
 			return false;
 		}
 	}
+	public void setRoles(List<String> r) {
+		this.arr = r;
+	}
+	
 }

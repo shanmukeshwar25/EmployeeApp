@@ -9,22 +9,15 @@ import com.employees.storage.StorageType;
 
 public class Main {
 	public static void main(String args[]) {
-//		DatabaseConnecttion.startConnection();
-//		EmpDAO emp = new JdbcEmpDAOImp();
-//		List<String> l = new ArrayList<>();
-//		l.add("ADMIN");
-//		emp.addEmp("Alice Smith","admin", "15-09-2005", "New York", "alihce.s@hexample.com",l, "Engineering");
-		
 		StorageType type = StorageSelection.storageSelection();
 		EmpDAO empdao;
-		if(type.equals(StorageType.FILE)) {
+		if (type.equals(StorageType.FILE)) {
 			empdao = new EmpDAOImp();
-		} 
-		else {
+		} else {
 			empdao = new JdbcEmpDAOImp();
 		}
-		
+
 		Login.start(empdao);
-		
+
 	}
 }

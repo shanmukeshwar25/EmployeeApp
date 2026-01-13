@@ -7,7 +7,7 @@
 		],
 		"dob": "12-12-2003",
 		"name": "admin",
-		"id": "admin",
+		"id": "ADMIN",
 		"department": "dev",
 		"email": "admin@gmail.com"
 	},
@@ -46,5 +46,42 @@
 		"id": "EMP3",
 		"department": "dev",
 		"email": "ra@gmail.com"
+	},
+	{
+		"password": "fc2e5e227c2f34e6fd340ef92a18bc6ee4e8728e1c161d5f9ad1c333",
+		"address": "hyd",
+		"role": [
+			"USER"
+		],
+		"dob": "12-12-2001",
+		"name": "we we",
+		"id": "EMP4",
+		"department": "dev",
+		"email": "we@gmail.com"
+	},
+	{
+		"password": "7a6bad48f3bdf4a5f8aa06d76e31546d5e2bc52e2add49748bbdd896",
+		"address": "pune",
+		"role": [
+			"USER"
+		],
+		"dob": "12-02-2003",
+		"name": "ab cd",
+		"id": "EMP5",
+		"department": "se",
+		"email": "abcd@gmail.com"
+	},
+	{
+		"password": "05c91702ce2b755b2bd3fcb9d52d5167e4dea5f1559120f2c926c5a1",
+		"address": "hyd",
+		"role": [
+			"USER",
+			"MANAGER"
+		],
+		"dob": "12-12-2001",
+		"name": "raaaa raaa",
+		"id": "EMP6",
+		"department": "dev",
+		"email": "raaa@gmail.com"
 	}
 ]

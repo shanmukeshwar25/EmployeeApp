@@ -1,9 +1,9 @@
 
 package com.employees.services;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import com.employees.controller.Login;
 import com.employees.dao.EmpDAO;
 import com.employees.dao.EmpDAOImp;
 import com.employees.dao.ServerSideValidation;
@@ -13,71 +13,88 @@ import com.employees.utils.Utils;
 public class UpdatebyId {
 
 	// updating details of specific ID
-	public void updatebyid() {
-			Scanner sc = new Scanner(System.in);
-			EmpDAO dao = new EmpDAOImp();
-			boolean valid = true;
-			String id = null;
-			Employee e = new Employee();
-			while (valid) {
-				System.out.print("Enter Employee ID to update: ");
-				id = sc.next();
-				if (!ServerSideValidation.checkExists(id)) {
-					System.out.println("Employee with ID:" + id + " does not exists" + " enter the valid ID");
-				} else {
-					e.setId(id);
-					valid = false;
-				}
-			}
-			sc.nextLine();
-			EmpDAO up = new EmpDAOImp();
-			System.out.print("Enter the first name: ");
-			String firstname = sc.next();
-			System.out.print("Enter last name: ");
-			String lastname = sc.next();
-			String name = firstname + " " + lastname;
-			e.setName(name);
+	public void updatebyid(EmpDAO dao) {
+		Scanner sc = new Scanner(System.in);
+		boolean valid = true;
 
+		String id = null;
+
+		Employee e = null;
+		while (valid) {
+			System.out.print("Enter Employee ID to update: ");
+			id = sc.next().toUpperCase();
+			if (!dao.checkExists(id)) {
+				System.out.println("Employee with ID:" + id + " does not exists");
+			} else {
+				e = dao.findById(id);
+				e.setId(id);
+				valid = false;
+			}
+		}
+		System.out.print("Enter the first name: ");
+		String firstname = sc.next();
+		System.out.print("Enter last name: ");
+		String lastname = sc.next();
+		String name = firstname + " " + lastname;
+		e.setName(name);
+
+		boolean validob = false;
+		while (!validob) {
 			System.out.print("Enter the date of birth (dd-MM-yyyy) : ");
 			String dob = sc.next();
-			Utils.validateDOB(dob, e);
+			if (Utils.validateDOB(dob, e)) {
+				validob = true;
+				e.setDOB(dob);
+			}
+		}
 
-			System.out.print("Enter Address: ");
-			String address = sc.next();
-			e.setAddress(address);
+		System.out.print("Enter Address: ");
+		String address = sc.next();
+		e.setAddress(address);
 
+		boolean validmail = false;
+		while (!validmail) {
 			System.out.print("Enter email: ");
 			String email = sc.next();
-			Utils.validateMail(email, e);
+			if (Utils.validateMail(email, e)) {
+				validmail = true;
+				e.setEmail(email);
+			}
+		}
 
-			System.out.print("Enter Department : ");
-			String depname = sc.next();
-			e.setdepName(depname);
+		System.out.print("Enter Department : ");
+		String depname = sc.next();
+		e.setdepName(depname);
 
-			up.updatebyId(e.getId(), e.getName(), e.getDOB(), e.getAddress(), e.getEmail(), e.getdepName());
-			dao.viewEmp();
-		} 
+		dao.updatebyId(e.getId(), e.getName(), e.getDOB(), e.getAddress(), e.getEmail(), e.getdepName());
+		dao.viewEmp();
+	}
 
 	// Updates the logged-in user's address and email
-	public void updateUserbyid() {
-			String id = ServerSideValidation.empid;
-			if (!ServerSideValidation.checkExists(id)) {
-				System.out.println("Employee with ID:" + id + " does not exists");
-				return;
-			}
-			Employee e = new Employee();
-			e.setId(id);
-			Scanner sc = new Scanner(System.in);
-			EmpDAO dao = new EmpDAOImp();
+	public void updateUserbyid(EmpDAO dao) {
+        
+		String id = Login.result.getId();
+		Employee e = null;
+		e = dao.findById(id);
+		e.setId(id);
 
-			System.out.print("Enter Address: ");
-			String address = sc.nextLine();
-			e.setAddress(address);
+		Scanner sc = new Scanner(System.in);
 
+		System.out.print("Enter Address: ");
+		String address = sc.nextLine();
+		e.setAddress(address);
+
+		boolean validmail = false;
+		while (!validmail) {
 			System.out.print("Enter email: ");
 			String email = sc.next();
-			Utils.validateMail(email, e);
+			if (Utils.validateMail(email, e)) {
+				validmail = true;
+				e.setEmail(email);
+			}
+		}
 
-			dao.updateUserbyId(id, address, email);
-		} 
+		dao.updateUserbyId(e.getId(), e.getAddress(), e.getEmail());
+        dao.viewEmpById(e.getId());
 	}
+}

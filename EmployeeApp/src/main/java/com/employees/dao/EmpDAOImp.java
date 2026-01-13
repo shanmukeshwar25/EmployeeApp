@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -12,6 +13,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
+import com.employees.model.Employee;
+import com.employees.model.LoginResult;
 import com.employees.utils.Utils;
 
 public class EmpDAOImp implements EmpDAO {
@@ -19,11 +22,11 @@ public class EmpDAOImp implements EmpDAO {
 	// show the employee data
 	private void printEmp(JSONObject emp) {
 		System.out.println("ID:" + emp.get("id") + "|  Name: " + emp.get("name") + "  |  DOB: " + emp.get("dob")
-				+ "  |  Address: " + emp.get("address") + "  |  Email: " + emp.get("email") + "  |  Role: " + emp.get("role")
-				+ "  |  Department : " + emp.get("department"));
+				+ "  |  Address: " + emp.get("address") + "  |  Email: " + emp.get("email") + "  |  Role: "
+				+ emp.get("role") + "  |  Department : " + emp.get("department"));
 	}
 
-	// write a JSONArray to file 
+	// write a JSONArray to file
 	private void savetoFile(JSONArray arr) throws IOException {
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(Utils.file))) {
 			writer.write(arr.toJSONString());
@@ -33,13 +36,55 @@ public class EmpDAOImp implements EmpDAO {
 
 	}
 
+	public Employee findById(String id) {
+		JSONArray arr;
+		try {
+			boolean present = false;
+			arr = ServerSideValidation.readEmployeeData();
+			for (Object o : arr) {
+				JSONObject emp = (JSONObject) o;
+				if (id.equals(emp.get("id"))) {
+					Employee e = new Employee();
+					e.setId((String) emp.get("id"));
+					e.setAddress((String) emp.get("email"));
+					e.setdepName((String) emp.get("department"));
+					e.setName((String) emp.get("name"));
+					e.setDOB((String) emp.get("dob"));
+					e.setEmail((String) emp.get("email"));
+					JSONArray rolesArray = (JSONArray) emp.get("role");
+					List<String> roles = new ArrayList<>();
+
+					for (Object role : rolesArray) {
+						roles.add(role.toString());
+					}
+
+					e.setRoles(roles);
+
+					present = true;
+					return e;
+				}
+			}
+			if (!present) {
+				System.out.println("no employee found");
+			}
+
+		} catch (FileNotFoundException e) {
+			System.out.println("file is not found");
+		} catch (IOException e) {
+			System.out.println("I/O error occured while reading the file");
+		} catch (ParseException e) {
+			System.out.println("error parsing employee data");
+		}
+		return null;
+	}
+
 	// adding new employee tooutput.json file
-	public void addEmp(String id, String name, String pass, String dob, String address, String email,
-			List<String> role, String depname) {
+	public void addEmp(String name, String pass, String dob, String address, String email, List<String> role,
+			String depname) {
 		JSONArray arr = new JSONArray();
 		try {
 			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("id", id);
+			jsonObject.put("id", "EMP" + ServerSideValidation.ID);
 			jsonObject.put("name", name);
 			jsonObject.put("password", pass);
 			jsonObject.put("dob", dob);
@@ -62,7 +107,7 @@ public class EmpDAOImp implements EmpDAO {
 		}
 	}
 
-	//deleting employee from output.json file
+	// deleting employee from output.json file
 	public void deleteId(String id) {
 		try {
 			JSONArray arr = ServerSideValidation.readEmployeeData();
@@ -75,8 +120,8 @@ public class EmpDAOImp implements EmpDAO {
 				}
 			}
 			if (ind == -1) {
-				  System.out.println("Employee with ID " + id + " not found");
-		            return;
+				System.out.println("Employee with ID " + id + " not found");
+				return;
 			}
 			arr.remove(ind);
 			savetoFile(arr);
@@ -99,7 +144,7 @@ public class EmpDAOImp implements EmpDAO {
 		System.out.println();
 		try {
 			JSONArray arr = ServerSideValidation.readEmployeeData();
-			if(arr==null || arr.isEmpty()) {
+			if (arr == null || arr.isEmpty()) {
 				return false;
 			}
 			for (Object o : arr) {
@@ -108,11 +153,11 @@ public class EmpDAOImp implements EmpDAO {
 			}
 			return true;
 		} catch (FileNotFoundException e) {
-			System.out.println("file is not found "+e.getMessage());
+			System.out.println("file is not found " + e.getMessage());
 		} catch (IOException e) {
-			System.out.println("I/O error occured while reading the file "+e.getMessage());
+			System.out.println("I/O error occured while reading the file " + e.getMessage());
 		} catch (ParseException e) {
-			System.out.println("error parsing employee data "+e.getMessage());
+			System.out.println("error parsing employee data " + e.getMessage());
 		}
 		return false;
 	}
@@ -132,17 +177,16 @@ public class EmpDAOImp implements EmpDAO {
 				System.out.println("no employee found");
 			}
 		} catch (FileNotFoundException e) {
-			System.out.println("file is not found "+e.getMessage());
+			System.out.println("file is not found " + e.getMessage());
 		} catch (IOException e) {
-			System.out.println("I/O error occured while reading the file "+e.getMessage());
+			System.out.println("I/O error occured while reading the file " + e.getMessage());
 		} catch (ParseException e) {
-			System.out.println("error parsing employee data "+e.getMessage());
-		} 
+			System.out.println("error parsing employee data " + e.getMessage());
+		}
 	}
 
-	// updating data of employee 
-	public void updatebyId(String id, String name, String DOB, String address, String email,
-			String depname) {
+	// updating data of employee
+	public void updatebyId(String id, String name, String DOB, String address, String email, String depname) {
 		try {
 			boolean present = false;
 			JSONArray arr = ServerSideValidation.readEmployeeData();
@@ -164,11 +208,11 @@ public class EmpDAOImp implements EmpDAO {
 				System.out.println("no employee found in the file");
 			}
 		} catch (FileNotFoundException e) {
-			System.out.println("file is not found "+e.getMessage());
+			System.out.println("file is not found " + e.getMessage());
 		} catch (IOException e) {
-			System.out.println("I/O error occured while reading the file "+e.getMessage());
+			System.out.println("I/O error occured while reading the file " + e.getMessage());
 		} catch (ParseException e) {
-			System.out.println("error parsing employee data "+e.getMessage());
+			System.out.println("error parsing employee data " + e.getMessage());
 		}
 
 	}
@@ -192,15 +236,15 @@ public class EmpDAOImp implements EmpDAO {
 				System.out.println("no employee found in the file ");
 			}
 		} catch (FileNotFoundException e) {
-			System.out.println("file is not found "+e.getMessage());
+			System.out.println("file is not found " + e.getMessage());
 		} catch (IOException e) {
-			System.out.println("I/O error occured while reading the file "+e.getMessage());
+			System.out.println("I/O error occured while reading the file " + e.getMessage());
 		} catch (ParseException e) {
-			System.out.println("error parsing employee data "+e.getMessage());
+			System.out.println("error parsing employee data " + e.getMessage());
 		}
 	}
 
-	//Updates the logged-in user's address and email
+	// Updates the logged-in user's address and email
 	public void updateUserbyId(String id, String address, String email) {
 		try {
 			boolean present = false;
@@ -220,11 +264,11 @@ public class EmpDAOImp implements EmpDAO {
 				System.out.println("no employee found in the file");
 			}
 		} catch (FileNotFoundException e) {
-			System.out.println("file is not found "+e.getMessage());
+			System.out.println("file is not found " + e.getMessage());
 		} catch (IOException e) {
-			System.out.println("I/O error occured while reading the file "+e.getMessage());
+			System.out.println("I/O error occured while reading the file " + e.getMessage());
 		} catch (ParseException e) {
-			System.out.println("error parsing employee data "+e.getMessage());
+			System.out.println("error parsing employee data " + e.getMessage());
 		}
 	}
 
@@ -239,7 +283,7 @@ public class EmpDAOImp implements EmpDAO {
 					List<String> roleArray = (List<String>) jsonObject.get("role");
 					if (!roleArray.contains(role)) {
 						roleArray.add(role);
-						System.out.println("Employee Updated role");
+						System.out.println("assigned new role to employee");
 					} else {
 						System.out.println("Cannot assign same role again");
 					}
@@ -248,11 +292,11 @@ public class EmpDAOImp implements EmpDAO {
 			savetoFile(arr);
 
 		} catch (FileNotFoundException e) {
-			System.out.println("file is not found "+e.getMessage());
+			System.out.println("file is not found " + e.getMessage());
 		} catch (IOException e) {
-			System.out.println("I/O error occured while reading the file "+e.getMessage());
+			System.out.println("I/O error occured while reading the file " + e.getMessage());
 		} catch (ParseException e) {
-			System.out.println("error parsing employee data "+e.getMessage());
+			System.out.println("error parsing employee data " + e.getMessage());
 		}
 	}
 
@@ -276,65 +320,77 @@ public class EmpDAOImp implements EmpDAO {
 			savetoFile(arr);
 
 		} catch (FileNotFoundException e) {
-			System.out.println("file is not found "+e.getMessage());
+			System.out.println("file is not found " + e.getMessage());
 		} catch (IOException e) {
-			System.out.println("I/O error occured while reading the file "+e.getMessage());
+			System.out.println("I/O error occured while reading the file " + e.getMessage());
 		} catch (ParseException e) {
-			System.out.println("error parsing employee data "+e.getMessage());
+			System.out.println("error parsing employee data " + e.getMessage());
 		}
 	}
 
-	@Override
-	public void addEmp(String name, String pass, String dob, String address, String email, List<String> role,
-			String depname) {
-		// TODO Auto-generated method stub
-		
-	}
 	
-	// validating the login credentials 
-		public boolean checkLogin(String id, String p) {
-			try {
-				JSONArray arr = ServerSideValidation.readEmployeeData();
-				for (Object o : arr) {
-					JSONObject obj = (JSONObject) o;
-					if (obj.get("id").equals(id)) {
-						String hashp = Utils.hashPass(p);
-						if (obj.get("password").equals(hashp)) {
+	// validating the login credentials
+	public LoginResult checkLogin(String id, String p) {
+		List<String> roles = new ArrayList<>();
+		try {
+			JSONArray arr = ServerSideValidation.readEmployeeData();
+			for (Object o : arr) {
+				JSONObject obj = (JSONObject) o;
+				if (obj.get("id").equals(id)) {
+					String hashp = Utils.hashPass(p);
+					if (obj.get("password").equals(hashp)) {
 
-							System.out.println("You are a valid User");
-							System.out.println();
+						System.out.println("You are a valid User");
+						System.out.println();
 
-							List<String> priority = Arrays.asList("ADMIN", "MANAGER", "USER");
-							List<String>  roles = (List<String>) obj.get("role");
+						List<String> priority = Arrays.asList("ADMIN", "MANAGER", "USER");
+						roles = (List<String>) obj.get("role");
 
-							roles.sort((r1, r2) -> Integer.compare(priority.indexOf(r1.toUpperCase()),
-									priority.indexOf(r2.toUpperCase())));
+						roles.sort((r1, r2) -> Integer.compare(priority.indexOf(r1.toUpperCase()),
+								priority.indexOf(r2.toUpperCase())));
 
-							Collections.sort(roles);
+						Collections.sort(roles);
 
-							ServerSideValidation.role = (String) roles.get(0);
+						return new LoginResult(true, id, roles);
+					} else {
+						System.out.println("Incorrect password ");
+						return new LoginResult(false, id, roles);
 
-							ServerSideValidation.empid = id;
-							
-							return true;
-						} else {
-							System.out.println("Incorrect credentails");
-							return false;
-						}
 					}
-
 				}
-				System.out.println("Incorrect credentails");
-				return false;
-			} catch (FileNotFoundException e) {
-				System.out.println("file is not found");
-			} catch (IOException e) {
-				System.out.println("I/O error occured while reading the file");
-			} catch (ParseException e) {
-				System.out.println("error parsing employee data");
+
+			}
+			System.out.println("Incorrect credentails");
+			return new LoginResult(false, id, roles);
+
+		} catch (FileNotFoundException e) {
+			System.out.println("file is not found");
+		} catch (IOException e) {
+			System.out.println("I/O error occured while reading the file");
+		} catch (ParseException e) {
+			System.out.println("error parsing employee data");
+		}
+		return new LoginResult(false, id, roles);
+	}
+
+	public boolean checkExists(String id) {
+		try {
+			JSONArray arr = ServerSideValidation.readEmployeeData();
+			for (Object o : arr) {
+				JSONObject emp = (JSONObject) o;
+				if (id.equals(emp.get("id"))) {
+					return true;
+				}
 			}
 			return false;
+		} catch (FileNotFoundException e) {
+			System.out.println("file is not found");
+		} catch (IOException e) {
+			System.out.println("I/O error occured while reading the file");
+		} catch (ParseException e) {
+			System.out.println("error parsing employee data");
 		}
+		return false;
+	}
+
 }
-
-

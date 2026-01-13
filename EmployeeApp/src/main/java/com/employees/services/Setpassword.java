@@ -3,6 +3,7 @@ package com.employees.services;
 
 import java.util.Scanner;
 
+import com.employees.controller.Login;
 import com.employees.dao.EmpDAO;
 import com.employees.dao.EmpDAOImp;
 import com.employees.dao.ServerSideValidation;
@@ -12,10 +13,9 @@ import com.employees.utils.Utils;
 public class Setpassword {
 
 	// assign new password for user
-	public void setPass() {
-		EmpDAO dao = new EmpDAOImp();
+	public void setPass(EmpDAO dao) {
 		Scanner sc = new Scanner(System.in);
-		String id = ServerSideValidation.empid;
+		String id = Login.result.getId();
 		boolean checkpass = false;
 		while (!checkpass) {
 			System.out.print("Enter new password: ");
@@ -33,12 +33,11 @@ public class Setpassword {
 	}
 
 	// reset password for employee 
-	public void reset_password() {
-		EmpDAO dao = new EmpDAOImp();
+	public void reset_password(EmpDAO dao) {
 		System.out.print("Enter the ID to view: ");
 		Scanner sc = new Scanner(System.in);
 		try {
-			String id = sc.next();
+			String id = sc.next().toUpperCase();
 //			String password = Utils.hashPass(Utils.pass);
 			String password = "emp"+GeneratePassword.generatePassword();
 			System.out.println("the default password is : "+password);

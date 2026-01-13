@@ -16,7 +16,6 @@ public class AddEmployee {
 	// adding new employee into the JSON file
 	public void addEmployee(EmpDAO dao) {
 		Scanner sc = new Scanner(System.in);
-//		EmpDAO dao = new EmpDAOImp();
 		int ID = ServerSideValidation.autoId();
 		Employee e = new Employee();
 		String id = "EMP" + ID;
@@ -84,7 +83,7 @@ public class AddEmployee {
 				e.getdepName());
 		dao.viewEmp();
 
-		System.out.println("Employee with Id : " + e.getId() + " added successfully\n");
+		
 	}
 
 }

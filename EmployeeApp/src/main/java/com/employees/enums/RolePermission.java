@@ -1,6 +1,7 @@
 
 package com.employees.enums;
 
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,7 @@ public class RolePermission {
 			   Operations.VIEWBYID,
 			   Operations.GRANT_ROLE,
 			   Operations.REVOKE_ROLE,
+			   Operations.CHANGE_PASS,
 			   Operations.RESET_PASSWORD,
 			   Operations.EXIT
 			   ));
@@ -35,9 +37,17 @@ public class RolePermission {
 			   Operations.EXIT,
 			   Operations.UPDATE));
    }
-   public  boolean hasAccess(String role,Operations operation) {
-
- 		return map.get(role).contains(operation);	
-   }
+//   public  boolean hasAccess(String role,Operations operation) {
+//
+// 		return map.get(role).contains(operation);	
+//   }
+   public  boolean hasAccess(List<String> roles,Operations operation) {
+       for(String role : roles) {
+    	   if(map.getOrDefault(role,Collections.emptySet()).contains(operation)) {
+				return true;
+			}
+		}
+		return false;
+      }
 }
 
