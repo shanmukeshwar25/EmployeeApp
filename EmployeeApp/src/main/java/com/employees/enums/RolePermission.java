@@ -28,6 +28,7 @@ public class RolePermission {
 	   map.put("MANAGER", EnumSet.of(
 			   Operations.UPDATE,
 			   Operations.VIEW,
+			   Operations.CHANGE_PASS,
 			   Operations.VIEWBYID,
 			   Operations.EXIT
 			   ));

@@ -313,7 +313,7 @@ public class EmpDAOImp implements EmpDAO {
 						roleArray.remove(role);
 						System.out.println("Employee Updated role");
 					} else {
-						System.out.println("does not contain that role ");
+						System.out.println("entered role does not exist");
 					}
 				}
 			}

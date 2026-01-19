@@ -18,9 +18,12 @@ public class ViewEmp {
 			id = Login.result.getId();
 		} else {
 			System.out.print("Enter the ID to view: ");
-			id = sc.next().toUpperCase();
+		   id = sc.next().toUpperCase();
+		   if(!dao.checkExists(id)) {
+				System.out.println("employee with id "+id+" does not exists");
+				return;
+			}
 		}
-		
 		dao.viewEmpById(id);
 	}
 

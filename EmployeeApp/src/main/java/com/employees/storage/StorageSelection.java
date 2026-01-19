@@ -25,7 +25,7 @@ public class StorageSelection {
         }
 		switch (type1) {
 		case FILE:
-			System.out.println("using file");
+			System.out.println("Using file system");
 			return StorageType.FILE;
 		case POSTGRES:
 			DatabaseConnecttion.startConnection();

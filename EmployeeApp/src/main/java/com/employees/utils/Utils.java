@@ -10,8 +10,6 @@ import java.time.format.DateTimeParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.employees.controller.Menu;
-import com.employees.dao.ServerSideValidation;
 import com.employees.model.Employee;
 
 public class Utils {
@@ -46,12 +44,12 @@ public class Utils {
 
 	
 	// validating the date of birth 
-	public static boolean validateDOB(String dob, Employee emp) {
+	public static boolean validateDOB(String dob) {
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 			LocalDate dateOfBirth = LocalDate.parse(dob, formatter);
 
-			// Optional: validate year range
+			// validate year range
 			int year = dateOfBirth.getYear();
 			if (year < 1990 || year > 2005) {
 				System.out.println("Invalid DOB: year must be between 1990 and 2005");
@@ -65,7 +63,7 @@ public class Utils {
 	}
 
 	// validation for email
-	public static boolean validateMail(String email, Employee emp) {
+	public static boolean validateMail(String email) {
 		Pattern emailPattern = Pattern.compile("[A-Za-z09.]+@[A-Za-z0-9]+\\.[A-za-z]{2,4}");
 		Matcher matcher = emailPattern.matcher(email);
 		if (!matcher.matches()) {

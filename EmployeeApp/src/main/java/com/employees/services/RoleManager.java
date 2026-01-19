@@ -60,12 +60,12 @@ public class RoleManager {
 		System.out.print("Enter the id to revoke role: ");
 		String id = sc.next().toUpperCase();
 
-		Employee ems = dao.findById(id);
-		System.out.println("Available roles: " + ems.getRole());
 		if (!dao.checkExists(id)) {
 			System.out.println("Employee with id:" + id + " does not exist");
 			return;
 		}
+		Employee ems = dao.findById(id);
+		System.out.println("Available roles: " + ems.getRole());
 
 		boolean valid = false;
 		String role = null;

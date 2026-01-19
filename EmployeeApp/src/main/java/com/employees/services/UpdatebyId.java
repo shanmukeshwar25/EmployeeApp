@@ -42,7 +42,7 @@ public class UpdatebyId {
 		while (!validob) {
 			System.out.print("Enter the date of birth (dd-MM-yyyy) : ");
 			String dob = sc.next();
-			if (Utils.validateDOB(dob, e)) {
+			if (Utils.validateDOB(dob)) {
 				validob = true;
 				e.setDOB(dob);
 			}
@@ -56,7 +56,7 @@ public class UpdatebyId {
 		while (!validmail) {
 			System.out.print("Enter email: ");
 			String email = sc.next();
-			if (Utils.validateMail(email, e)) {
+			if (Utils.validateMail(email)) {
 				validmail = true;
 				e.setEmail(email);
 			}
@@ -88,7 +88,7 @@ public class UpdatebyId {
 		while (!validmail) {
 			System.out.print("Enter email: ");
 			String email = sc.next();
-			if (Utils.validateMail(email, e)) {
+			if (Utils.validateMail(email)) {
 				validmail = true;
 				e.setEmail(email);
 			}
