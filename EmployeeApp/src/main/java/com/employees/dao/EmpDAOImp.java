@@ -46,7 +46,7 @@ public class EmpDAOImp implements EmpDAO {
 				if (id.equals(emp.get("id"))) {
 					Employee e = new Employee();
 					e.setId((String) emp.get("id"));
-					e.setAddress((String) emp.get("email"));
+					e.setAddress((String) emp.get("address"));
 					e.setdepName((String) emp.get("department"));
 					e.setName((String) emp.get("name"));
 					e.setDOB((String) emp.get("dob"));

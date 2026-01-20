@@ -38,10 +38,7 @@ public class RolePermission {
 			   Operations.EXIT,
 			   Operations.UPDATE));
    }
-//   public  boolean hasAccess(String role,Operations operation) {
-//
-// 		return map.get(role).contains(operation);	
-//   }
+
    public  boolean hasAccess(List<String> roles,Operations operation) {
        for(String role : roles) {
     	   if(map.getOrDefault(role,Collections.emptySet()).contains(operation)) {

@@ -72,5 +72,12 @@ public class Utils {
 		}
 		return true;
 	}
-
+	
+	// validation for password 
+	private static final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=()]).{5,10}$";
+	public static boolean validatePassword(String password) {
+		Pattern passPattern = Pattern.compile(PASSWORD_PATTERN);
+		Matcher matcher = passPattern.matcher(password);
+		return matcher.matches();
+	}
 }

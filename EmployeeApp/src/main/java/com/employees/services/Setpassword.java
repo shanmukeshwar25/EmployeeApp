@@ -23,9 +23,14 @@ public class Setpassword {
 			System.out.print("Re - Enter the new password: ");
 			String repass = sc.next();
 			if (pass.equals(repass)) {
-				String password = Utils.hashPass(pass);
-				dao.setPass(id, password);
-				checkpass = true;
+				if(Utils.validatePassword(pass)) {
+					String password = Utils.hashPass(pass);
+					dao.setPass(id, password);
+					checkpass = true;
+				}
+				else {
+					System.out.println("Invalid Password format");
+				}
 			} else {
 				System.out.println("Please re-enter the correct password ");
 			}
@@ -38,10 +43,8 @@ public class Setpassword {
 		Scanner sc = new Scanner(System.in);
 		try {
 			String id = sc.next().toUpperCase();
-//			String password = Utils.hashPass(Utils.pass);
 			String password = "emp"+GeneratePassword.generatePassword();
 			System.out.println("the default password is : "+password);
-//			e.setPass(Utils.hashPass(password));
 			dao.setPass(id, Utils.hashPass(password));
 		} catch (NumberFormatException ex) {
 			System.out.println("Please enter only numbers for ID, Age");
