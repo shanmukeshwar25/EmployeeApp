@@ -4,14 +4,11 @@ package com.employees.services;
 import java.util.Scanner;
 
 import com.employees.dao.EmpDAO;
-import com.employees.dao.EmpDAOImp;
-import com.employees.dao.ServerSideValidation;
-import com.employees.utils.Utils;
 
-public class DeleteEmp {
+public class DeleteEmployee {
 
 	// delete a all details of a specific ID
-	public void delete(EmpDAO dao) {
+	public void deleteEmployeeById(EmpDAO dao) {
 
 		Scanner sc = new Scanner(System.in);
 		System.out.print("Enter Employee ID to delete: ");
@@ -20,7 +17,11 @@ public class DeleteEmp {
 			System.out.println("Employee with ID:" + id + " does not exists");
 			return;
 		}
-		dao.deleteId(id);
-		dao.viewEmp();
+		try {
+			dao.deleteId(id);
+			dao.viewEmployees();
+		} catch (Exception e) {
+			System.out.println("failed to delete employee");
+		}
 	}
 }

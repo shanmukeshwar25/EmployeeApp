@@ -4,18 +4,17 @@ import java.util.Scanner;
 
 import com.employees.controller.Login;
 import com.employees.dao.EmpDAO;
-import com.employees.dao.EmpDAOImp;
-import com.employees.dao.ServerSideValidation;
+import com.employees.model.Session;
 
-public class ViewEmp {
+public class ViewEmployee {
 	Scanner sc = new Scanner(System.in);
 
 	// for viewing employees of a specific id
-	public void viewEmployeeById(EmpDAO dao) {
+	public void viewEmployeeById(EmpDAO dao,Session session) {
 
 		String id = null;
-		if (Login.result.getRole().size()<=1 && Login.result.getRole().get(0).equals("USER")) {
-			id = Login.result.getId();
+		if (session.getRoles().size()<=1 && session.getRoles().get(0).equals("USER")) {
+			id = session.getId();
 		} else {
 			System.out.print("Enter the ID to view: ");
 		   id = sc.next().toUpperCase();
@@ -24,14 +23,11 @@ public class ViewEmp {
 				return;
 			}
 		}
-		dao.viewEmpById(id);
+		dao.viewEmployeeById(id);
 	}
 
 	// viewing all employees
 	public void viewallEmployee(EmpDAO dao) {
-		 boolean hasData = dao.viewEmp();
-		    if (!hasData) {
-		        System.out.println("No employees found");
-		    }
+		 dao.viewEmployees();
 	}
 }

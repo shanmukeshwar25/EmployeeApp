@@ -1,66 +1,85 @@
 
 package com.employees.services;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
+import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+
 import com.employees.dao.EmpDAO;
-import com.employees.dao.EmpDAOImp;
-import com.employees.dao.ServerSideValidation;
+import com.employees.utils.EmployeeIdGenerator;
 import com.employees.enums.Roles;
+import com.employees.logger.EmployeeLogger;
 import com.employees.model.Employee;
 import com.employees.utils.GeneratePassword;
 import com.employees.utils.Utils;
 
 public class AddEmployee {
-	
+
 	// adding new employee into the JSON file
-	public void addEmployee(EmpDAO dao) {
+	public void addEmployee(EmpDAO dao) throws IOException, ParseException {
+		Logger log = EmployeeLogger.getLog();
 		Scanner sc = new Scanner(System.in);
-		int ID = ServerSideValidation.autoId();
-		Employee e = new Employee();
+		int ID = EmployeeIdGenerator.generateNextEmployeeId();
+		Employee emp = new Employee();
 		String id = "EMP" + ID;
-		e.setId(id);
+		emp.setId(id);
 
-		System.out.print("Enter first name: ");
-		String firstname = sc.next();
+		String firstname;
+		do {
+			System.out.print("Enter firstname : ");
+			firstname = sc.nextLine();
+		} while (!Utils.validateName(firstname));
 
-		System.out.print("Enter last name: ");
-		String lastname = sc.next();
+		String lastname;
+		do {
+			System.out.print("Enter lastname : ");
+			lastname = sc.nextLine();
+		} while (!Utils.validateName(lastname));
 
 		String name = firstname + " " + lastname;
-		e.setName(name);
+		log.info("add employee request recieved for name {}",emp.getName());
+		emp.setName(name);
 
-		String password = "emp"+GeneratePassword.generatePassword();
-		System.out.println("the default password is : "+password);
-		e.setPass(Utils.hashPass(password));
+		String password = "emp" + GeneratePassword.generatePassword();
+		System.out.println("the default password is : " + password);
+		emp.setPass(Utils.hashPass(password));
 
 		boolean validob = false;
-		while(!validob) {
+		String dob = null ;
+		while (!validob) {
 			System.out.print("Enter the date of birth (dd-MM-yyyy) : ");
-			String dob = sc.next();
-			if(Utils.validateDOB(dob)) {
-				validob=true;
-				e.setDOB(dob);
+			dob  = sc.nextLine();
+			if (Utils.validateDOB(dob)) {
+				validob = true;
+				emp.setDOB(dob);
 			}
 		}
 
-		System.out.print("Enter Address: ");
-		String address = sc.next();
-		e.setAddress(address);
-		
-		
-		boolean validmail=false;
-		while(!validmail) {
+		String address;
+		do {
+			System.out.print("Enter Address : ");
+			address = sc.nextLine();
+		} while (!Utils.validateAddress(address));
+		emp.setAddress(address);
+
+		boolean validmail = false;
+		String email = null;
+		while (!validmail) {
 			System.out.print("Enter email: ");
-			String email = sc.next();
-			if(Utils.validateMail(email)) {
-				validmail=true;
-				e.setEmail(email);
+			email =  sc.nextLine();
+			if (Utils.validateMail(email)) {
+				validmail = true;
+				emp.setEmail(email);
+				break;
 			}
 		}
 
-		
 		boolean valid = false;
+		List<String> roles = new ArrayList<>();
 		while (!valid) {
 			System.out.print("Available roles : ");
 			for (Roles role : Roles.values()) {
@@ -68,22 +87,27 @@ public class AddEmployee {
 			}
 			System.out.println();
 			System.out.print("Enter role: ");
-			String role = sc.next().toUpperCase();
-			valid = e.setRole(role);
+			String role = sc.nextLine().toUpperCase();
+			roles.add(role);
+			valid = emp.setRole(role);
 			if (!valid) {
 				System.out.println("Invalid role re-enter again");
 			}
 		}
 
-		System.out.print("Enter Department : ");
-		String depname = sc.next();
-		e.setdepName(depname);
+		String depname;
+		do {
+			System.out.print("Enter department : ");
+			depname = sc.nextLine();
+		} while (!Utils.validateDepartment(depname));
+		emp.setdepName(depname);
+		try {
+			dao.addEmployee(name, password, dob , address, email, roles, depname);
+			dao.viewEmployees();
+		} catch (Exception er) {
+			log.error("Failed to add Employee for ID {}",emp.getId(),er.getMessage());
+		}
 
-		dao.addEmp(e.getName(), e.getPass(), e.getDOB(), e.getAddress(), e.getEmail(), e.getRole(),
-				e.getdepName());
-		dao.viewEmp();
-
-		
 	}
 
 }

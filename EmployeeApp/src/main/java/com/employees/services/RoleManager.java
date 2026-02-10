@@ -1,9 +1,9 @@
 package com.employees.services;
 
+import java.util.Optional;
 import java.util.Scanner;
 
 import com.employees.dao.EmpDAO;
-import com.employees.dao.ServerSideValidation;
 import com.employees.model.Employee;
 import com.employees.utils.Utils;
 
@@ -25,8 +25,13 @@ public class RoleManager {
 			return;
 		}
 
-		Employee ems = dao.findById(id);
-		System.out.println("Available roles: " + ems.getRole());
+		Optional<Employee> opt = dao.findById(id);
+		if (opt.isEmpty()) {
+		    System.out.println("Employee not found");
+		    return;
+		}
+		Employee ems = opt.get();
+		System.out.println("Existing roles: " + ems.getRole());
 
 		boolean valid = false;
 		String role;
@@ -52,11 +57,6 @@ public class RoleManager {
 	public void revokeRole(EmpDAO dao) {
 		Scanner sc = new Scanner(System.in);
 
-		if (Utils.file.exists() && Utils.file.length() <= 2) {
-			System.out.println("no employees found");
-			return;
-		}
-
 		System.out.print("Enter the id to revoke role: ");
 		String id = sc.next().toUpperCase();
 
@@ -64,8 +64,20 @@ public class RoleManager {
 			System.out.println("Employee with id:" + id + " does not exist");
 			return;
 		}
-		Employee ems = dao.findById(id);
-		System.out.println("Available roles: " + ems.getRole());
+		
+		Optional<Employee> opt = dao.findById(id);
+		if (opt.isEmpty()) {
+		    System.out.println("Employee not found");
+		    return;
+		}
+		Employee ems = opt.get();
+		
+		if (ems == null) {
+		    System.out.println("Employee record not found");
+		    return;
+		}
+		
+		System.out.println("Existing roles: " + ems.getRole());
 
 		boolean valid = false;
 		String role = null;

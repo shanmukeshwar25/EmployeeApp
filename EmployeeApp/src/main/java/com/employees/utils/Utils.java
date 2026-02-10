@@ -10,17 +10,19 @@ import java.time.format.DateTimeParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.employees.model.Employee;
-
 public class Utils {
 
 	public static final File file = new File("output.json");
+	private static final String EMP_ID_REGEX = "TEK[0-9]+";
+	private static final String PREFIX = "EMP";
+	
+	public static boolean validId(String id) {
+		return id != null && id.matches(EMP_ID_REGEX);
+	}
 	
 	// hash passwords
 	public static String hashPass(String pass) {
-
 		String hashValue = null;
-
 		try {
 
 			MessageDigest md = MessageDigest.getInstance("SHA-224");
@@ -42,8 +44,7 @@ public class Utils {
 		}
 	}
 
-	
-	// validating the date of birth 
+	// validating the date of birth
 	public static boolean validateDOB(String dob) {
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -72,12 +73,26 @@ public class Utils {
 		}
 		return true;
 	}
-	
-	// validation for password 
+
+	// validation for password
 	private static final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=()]).{5,10}$";
+
 	public static boolean validatePassword(String password) {
 		Pattern passPattern = Pattern.compile(PASSWORD_PATTERN);
 		Matcher matcher = passPattern.matcher(password);
 		return matcher.matches();
 	}
+
+	public static boolean validateAddress(String address) {
+		return address != null && !address.isBlank();
+	}
+
+	public static boolean validateDepartment(String department) {
+		return department != null && department.matches("[A-Za-z ]{2,30}");
+	}
+
+	public static boolean validateName(String name) {
+		return name != null && !name.isBlank() && name.matches("[A-Za-z]+");
+	}
+
 }
