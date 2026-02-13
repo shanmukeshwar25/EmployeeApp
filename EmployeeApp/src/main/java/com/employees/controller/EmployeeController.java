@@ -204,5 +204,14 @@ public class EmployeeController {
 			System.out.println("Unable to fetch employees");
 		}
 	}
+	
+	public void fetchInActive(EmpDAO dao) {
+		try {
+			employeeService.fetchInActive(dao);
+		}
+		catch (Exception e) {
+			System.out.println("Unable to fetch inActive employees");
+		}
+	}
 
 }

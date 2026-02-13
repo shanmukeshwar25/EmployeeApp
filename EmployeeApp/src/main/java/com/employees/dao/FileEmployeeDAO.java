@@ -411,4 +411,10 @@ public class FileEmployeeDAO implements EmpDAO {
 	    }
 	    return false;
 	}
+
+	@Override
+	public void fetchInActive() {
+		// TODO Auto-generated method stub
+		
+	}
 }

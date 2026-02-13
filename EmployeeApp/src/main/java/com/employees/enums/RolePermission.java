@@ -21,6 +21,7 @@ public class RolePermission {
 			   Operations.GRANT_ROLE,
 			   Operations.REVOKE_ROLE,
 			   Operations.CHANGE_PASS,
+			   Operations.FETCH_INACTIVE,
 			   Operations.LOGOUT,
 			   Operations.RESET_PASSWORD,
 			   Operations.EXIT

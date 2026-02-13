@@ -50,6 +50,8 @@ public class JdbcEmployeeDAO implements EmpDAO {
 			+ "join emp_roles r ON e.emp_id = r.emp_id " + "WHERE e.emp_id = ? and e.isActive = true";
 
 	private static final String roleExistsQuery = "select count(*) from emp_roles where emp_id=? AND emp_role=?";
+	
+	private static final String fetchInActiveQuery = "select * from employees where isActive = false";
 
 	// print the employee record
 	private void printRecord(ResultSet rs) throws SQLException {
@@ -446,5 +448,20 @@ public class JdbcEmployeeDAO implements EmpDAO {
 		}
 		return new LoginResult(false, null, null);
 
+	}
+	
+	public void fetchInActive() {
+		System.out.println();
+		System.out.println("  ----------------------------");
+		System.out.println("    INACTIVE EMPLOYEES DETAILS ");
+		System.out.println("  ----------------------------");
+		System.out.println();
+
+		try (Connection conn = getConnection(); Statement stat = conn.createStatement()) {
+			ResultSet rs = stat.executeQuery(fetchInActiveQuery);
+			printRecord(rs);
+		} catch (SQLException e) {
+			throw new DataAccessException("DB error during the fetching data "+e);
+		}
 	}
 }

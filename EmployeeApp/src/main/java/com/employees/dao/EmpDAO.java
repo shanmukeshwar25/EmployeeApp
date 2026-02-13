@@ -18,6 +18,7 @@ public interface EmpDAO {
 	void updateUserById(String id,String address,String email);
 	void grantRole(String id,String role);
 	void revokeRole(String id,String role);
+    void fetchInActive();
 	Optional<Employee> findById(String id);
 	LoginResult checkLogin(String id, String p);
 }

@@ -61,6 +61,8 @@ public class Menu {
 					controller.revokeRole(dao);
 				else if (choice == Operations.CHANGE_PASS)
 					controller.changePassword(dao, session);
+				else if(choice == Operations.FETCH_INACTIVE)
+					controller.fetchInActive(dao);
 				else if (choice == Operations.UPDATE && !session.getRoles().contains("USER"))
 					controller.updateEmployeeById(dao);
 				else if (choice == Operations.UPDATE && session.getRoles().contains("USER"))

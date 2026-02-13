@@ -81,3 +81,7 @@
 2026-02-11 23:41:13,746 INFO  com.employees.services.EmployeeServices - assign role MANAGER succesfully to id EMP17  
 2026-02-11 23:43:07,699 INFO  com.employees.services.EmployeeServices - revoke role ADMIN request recieved for id EMP17  
 2026-02-11 23:43:07,818 INFO  com.employees.services.EmployeeServices - revoke role ADMIN succesfully to id EMP17  
+2026-02-13 12:32:27,514 INFO  com.employees.services.EmployeeServices - View all inActive employees request received 
+2026-02-13 12:32:27,613 INFO  com.employees.services.EmployeeServices - View all inActive employees successful 
+2026-02-13 12:33:02,866 INFO  com.employees.services.EmployeeServices - View all employees request received 
+2026-02-13 12:33:02,917 INFO  com.employees.services.EmployeeServices - View all employees successful 

@@ -318,4 +318,15 @@ public class EmployeeServices {
 			throw new ServiceException("Unable to fetch employee");
 		}
 	}
+	public void fetchInActive(EmpDAO dao) {
+		logger.info("View all inActive employees request received");
+		try {
+			dao.fetchInActive();
+			logger.info("View all inActive employees successful");
+		} catch (Exception e) {
+			logger.error("Failed to fetch inActive employees", e);
+			throw new ServiceException("Unable to fetch inActive employees");
+		}
+		
+	}
 }
