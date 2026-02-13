@@ -4,6 +4,9 @@
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 
+
+        <file>logs/ems.log</file>
+        
 		<rollingPolicy
 			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>logs/ems-%d{yyyy-MM-dd}.log</fileNamePattern>
@@ -11,7 +14,7 @@
 		</rollingPolicy>
 
 		<encoder>
-			<pattern>%d %-5level %logger - %msg%n</pattern>
+			<pattern>%d %-5level %logger - %msg %n</pattern>
 		</encoder>
 	</appender>
 	<root level="INFO">

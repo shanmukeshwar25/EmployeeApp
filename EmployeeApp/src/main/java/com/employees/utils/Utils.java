@@ -10,16 +10,17 @@ import java.time.format.DateTimeParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.employees.enums.Roles;
+
 public class Utils {
 
 	public static final File file = new File("output.json");
-	private static final String EMP_ID_REGEX = "TEK[0-9]+";
-	private static final String PREFIX = "EMP";
-	
+	private static final String EMP_ID_REGEX = "EMP[0-9]+";
+
 	public static boolean validId(String id) {
 		return id != null && id.matches(EMP_ID_REGEX);
 	}
-	
+
 	// hash passwords
 	public static String hashPass(String pass) {
 		String hashValue = null;
@@ -65,7 +66,7 @@ public class Utils {
 
 	// validation for email
 	public static boolean validateMail(String email) {
-		Pattern emailPattern = Pattern.compile("[A-Za-z09.]+@[A-Za-z0-9]+\\.[A-za-z]{2,4}");
+		Pattern emailPattern = Pattern.compile("[A-Za-z0-9.]+@[A-Za-z0-9]+\\.[A-za-z]{2,4}");
 		Matcher matcher = emailPattern.matcher(email);
 		if (!matcher.matches()) {
 			System.out.println("Invalid email id");
@@ -95,4 +96,15 @@ public class Utils {
 		return name != null && !name.isBlank() && name.matches("[A-Za-z]+");
 	}
 
+	public static boolean validateRole(String role) {
+		if (role == null || role.trim().isEmpty()) {
+			return false;
+		}
+		try {
+			Roles.valueOf(role.toUpperCase().trim());
+			return true;
+		} catch (IllegalArgumentException e) {
+			return false;
+		}
+	}
 }

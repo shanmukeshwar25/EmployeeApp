@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.employees.exception.DataAccessException;
 import com.employees.model.Employee;
 import com.employees.model.LoginResult;
 import com.employees.utils.DatabaseConnection;
@@ -26,27 +27,29 @@ public class JdbcEmployeeDAO implements EmpDAO {
 
 	private static final String updatePassword = "update emp_login set emp_password=? where emp_id=?";
 
-	private static final String grantQuery = "insert into emp_roles (emp_id,emp_role) values (?,?::emp_status)";
+	private static final String grantQuery = "insert into emp_roles (emp_id,emp_role) values (?,?)";
 	private static final String revokeQuery = "DELETE from emp_roles where emp_id = ? and emp_role = ?::emp_status";
 
 	private static final String addEmpLogin = "insert into emp_login (emp_id, emp_password) VALUES (?, ?);";
 	private static final String addEmpRole = "insert into emp_roles (emp_id, emp_role) VALUES (?, ?);";
 	private static final String addEmp = "insert into employees (emp_name, emp_dob, emp_address, emp_email, department_name) VALUES (?, ?, ?, ?, ?)";
 
-	private static final String deleteQuery = "delete from employees where emp_id = ?";
+	private static final String deleteQuery = "update employees set isActive = false where emp_id = ?;";
 
 	private static final String updateQuery = "update employees set emp_name=?,emp_dob=?,department_name=?,emp_address=?,emp_email=? where emp_id=?";
 	private static final String updateUserQuery = "update employees set emp_address=?,emp_email=? where emp_id=?";
 
-	private static final String viewQuery = "select * from employees";
-	private static final String viewByIdQuery = "select * from employees where emp_id=?";
+	private static final String viewQuery = "select * from employees where isActive = true";
+	private static final String viewByIdQuery = "select * from employees where emp_id=? and isActive = true";
 
-	private static final String countRolesQuery = "select count(*) from emp_roles where emp_id=?";
-	private static final String deleteEmpIfNoRole = "delete from employees where emp_id=?";
+	private static final String countRolesQuery = "select count(*) from emp_roles where emp_id=?  and e.isActive = true";
+	private static final String deleteEmpIfNoRole = "update employees set isActive = false where emp_id=?";
 
 	private static final String findEmpQuery = "select e.emp_id, e.emp_name, e.emp_dob, e.emp_address, "
 			+ "e.emp_email, e.department_name, r.emp_role " + "FROM employees e "
-			+ "join emp_roles r ON e.emp_id = r.emp_id " + "WHERE e.emp_id = ?";
+			+ "join emp_roles r ON e.emp_id = r.emp_id " + "WHERE e.emp_id = ? and e.isActive = true";
+
+	private static final String roleExistsQuery = "select count(*) from emp_roles where emp_id=? AND emp_role=?";
 
 	// print the employee record
 	private void printRecord(ResultSet rs) throws SQLException {
@@ -64,6 +67,16 @@ public class JdbcEmployeeDAO implements EmpDAO {
 			System.out.println("Error in formatting date " + e.getMessage());
 		}
 		return null;
+	}
+
+	private void closeConnection(Connection conn) {
+		try {
+			if (conn != null) {
+				conn.close();
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	private Connection getConnection() throws SQLException {
@@ -97,6 +110,20 @@ public class JdbcEmployeeDAO implements EmpDAO {
 			System.out.println("error during rollback : " + e.getMessage());
 		}
 
+	}
+
+	private boolean checkRoleExist(Connection conn, String id, String role) throws SQLException {
+
+		try (PreparedStatement ps = conn.prepareStatement(roleExistsQuery)) {
+
+			ps.setString(1, id);
+			ps.setObject(2, role.toUpperCase(), java.sql.Types.OTHER);
+
+			try (ResultSet rs = ps.executeQuery()) {
+				rs.next();
+				return rs.getInt(1) > 0;
+			}
+		}
 	}
 
 	public boolean checkExists(String id) {
@@ -150,11 +177,17 @@ public class JdbcEmployeeDAO implements EmpDAO {
 				System.out.println("successfully inserted " + gen_id);
 
 			}
-			commitTransaction(conn);
+			conn.commit();
 		} catch (SQLException e) {
-			if (conn != null)
-				rollbackTransaction(conn);
-			e.printStackTrace();
+			try {
+				if (conn != null) {
+					conn.rollback();
+				}
+			} catch (SQLException ex) {
+				e.addSuppressed(ex);
+			}
+		} finally {
+			closeConnection(conn);
 		}
 	}
 
@@ -172,7 +205,7 @@ public class JdbcEmployeeDAO implements EmpDAO {
 		} catch (SQLException e) {
 			if (conn != null)
 				rollbackTransaction(conn);
-			throw e;
+			throw new DataAccessException("error during the delete "+e);
 		}
 	}
 
@@ -188,7 +221,7 @@ public class JdbcEmployeeDAO implements EmpDAO {
 			ResultSet rs = stat.executeQuery(viewQuery);
 			printRecord(rs);
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			throw new DataAccessException("DB error during the fetching data "+e);
 		}
 	}
 
@@ -199,13 +232,14 @@ public class JdbcEmployeeDAO implements EmpDAO {
 			ResultSet rs = stat.executeQuery();
 			printRecord(rs);
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			throw new DataAccessException("DB error during fetching employee by ID "+e);
 		}
 	}
 
 	@Override
 	public void updateById(String id, String name, String DOB, String address, String email, String depname) {
-		if(id == null || id.isBlank()) return;
+		if (id == null || id.isBlank())
+			return;
 		Connection conn = null;
 		try {
 			conn = getConnection();
@@ -223,13 +257,14 @@ public class JdbcEmployeeDAO implements EmpDAO {
 		} catch (SQLException e) {
 			if (conn != null)
 				rollbackTransaction(conn);
-			System.out.println("failed to update employee " + e.getMessage());
+			throw new DataAccessException("DB error during update "+e);
 		}
 	}
 
 	@Override
 	public void setPassword(String id, String password) {
-		if(id == null || id.isBlank()) return;
+		if (id == null || id.isBlank())
+			return;
 		Connection conn = null;
 		try {
 			conn = getConnection();
@@ -243,7 +278,7 @@ public class JdbcEmployeeDAO implements EmpDAO {
 		} catch (SQLException e) {
 			if (conn != null)
 				rollbackTransaction(conn);
-			System.out.println("failed ro set password " + e.getMessage());
+			throw new DataAccessException("failed ro set password " + e.getMessage());
 		}
 	}
 
@@ -263,7 +298,7 @@ public class JdbcEmployeeDAO implements EmpDAO {
 		} catch (SQLException e) {
 			if (conn != null)
 				rollbackTransaction(conn);
-			System.out.println(e.getMessage());
+			throw new DataAccessException("DB error in updating user by ID "+e);
 		}
 	}
 
@@ -272,17 +307,29 @@ public class JdbcEmployeeDAO implements EmpDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
+
+			if (!checkExists(id)) {
+				System.out.println("Employee not found");
+				return;
+			}
+
+			if (checkRoleExist(conn, id, role)) {
+				System.out.println("Role already assigned");
+				return;
+			}
+
 			try (PreparedStatement ps = conn.prepareStatement(grantQuery)) {
 				ps.setString(1, id);
-				ps.setString(2, role);
-				ps.executeUpdate();
-				System.out.println("role granted successfully");
+				ps.setObject(2, role.toUpperCase(), java.sql.Types.OTHER);
+				int rows = ps.executeUpdate();
+				if (rows > 0)
+					System.out.println("role granted successfully");
 			}
 			commitTransaction(conn);
 		} catch (SQLException e) {
 			if (conn != null)
 				rollbackTransaction(conn);
-			System.out.println(e.getMessage());
+			throw new DataAccessException("error in granting role to employee"+e);
 		}
 
 	}
@@ -291,6 +338,17 @@ public class JdbcEmployeeDAO implements EmpDAO {
 		Connection conn = null;
 		try {
 			conn = getConnection();
+
+			if (!checkExists(id)) {
+				System.out.println("Employee not found");
+				return;
+			}
+
+			if (!checkRoleExist(conn, id, role)) {
+				System.out.println("Role not assigned");
+				return;
+			}
+
 			try (PreparedStatement revokeStat = conn.prepareStatement(revokeQuery);
 					PreparedStatement countStat = conn.prepareStatement(countRolesQuery);
 					PreparedStatement deleteStat = conn.prepareStatement(deleteEmpIfNoRole)) {
@@ -316,15 +374,15 @@ public class JdbcEmployeeDAO implements EmpDAO {
 		} catch (SQLException e) {
 			if (conn != null)
 				rollbackTransaction(conn);
-			e.printStackTrace();
+			throw new DataAccessException("error in revoking role "+e);
 		}
 	}
 
 	@Override
 	public Optional<Employee> findById(String id) {
-		 if (id == null || id.isBlank()) {
-		        return Optional.empty();
-		    }
+		if (id == null || id.isBlank()) {
+			return Optional.empty();
+		}
 		Employee emp = null;
 		try (Connection conn = getConnection(); PreparedStatement stat = conn.prepareStatement(findEmpQuery)) {
 
@@ -353,7 +411,7 @@ public class JdbcEmployeeDAO implements EmpDAO {
 				System.out.println("no employee found");
 			}
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			throw new DataAccessException("error in finding employee in DB "+e);
 		}
 
 		return Optional.empty();
@@ -384,7 +442,7 @@ public class JdbcEmployeeDAO implements EmpDAO {
 			}
 
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			throw new DataAccessException("error in log in details "+e);
 		}
 		return new LoginResult(false, null, null);
 

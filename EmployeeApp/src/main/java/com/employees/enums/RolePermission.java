@@ -21,6 +21,7 @@ public class RolePermission {
 			   Operations.GRANT_ROLE,
 			   Operations.REVOKE_ROLE,
 			   Operations.CHANGE_PASS,
+			   Operations.LOGOUT,
 			   Operations.RESET_PASSWORD,
 			   Operations.EXIT
 			   ));
@@ -30,11 +31,13 @@ public class RolePermission {
 			   Operations.VIEW,
 			   Operations.CHANGE_PASS,
 			   Operations.VIEWBYID,
+			   Operations.LOGOUT,
 			   Operations.EXIT
 			   ));
 	   map.put("USER", EnumSet.of(
 			   Operations.VIEWBYID,
 			   Operations.CHANGE_PASS,
+			   Operations.LOGOUT,
 			   Operations.EXIT,
 			   Operations.UPDATE));
    }
