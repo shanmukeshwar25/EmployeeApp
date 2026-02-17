@@ -85,12 +85,10 @@ public class EmployeeServices {
 			logger.info("Employee deleted succesfully for employee id {}", id);
 		} catch (DataAccessException e) {
 			logger.error("Database error during delete employee with id {} ", id, e);
-			throw new ServiceException("unable to delete employee:" + e.getMessage());
+			throw new ServiceException("unable to delete employee:" + e);
 		} catch (EmployeeNotFoundException e) {
 			throw e;
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
+		} 
 	}
 
 	public void viewEmployeeById(EmpDAO dao, Session session) {
@@ -114,7 +112,7 @@ public class EmployeeServices {
 		try {
 			dao.viewEmployees();
 			logger.info("View all employees successful");
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			logger.error("Failed to fetch employees", e);
 			throw new ServiceException("Unable to fetch employees");
 		}
@@ -134,7 +132,7 @@ public class EmployeeServices {
 			dao.grantRole(id, role);
 			logger.info("assign role {} succesfully to id {} ", role, id);
 		} catch (DataAccessException e) {
-			logger.error("Database error while assign the role for id {} ", id, e.getMessage());
+			logger.error("Database error while assign the role for id {} ", id, e);
 			throw new ServiceException("unable to assign role:" + e);
 		} catch (EmployeeNotFoundException | ValidationException e) {
 			throw e;
@@ -156,7 +154,7 @@ public class EmployeeServices {
 			logger.info("revoke role {} succesfully to id {} ", role, id);
 		} catch (DataAccessException e) {
 			logger.error("Database error while revoke the role for id {} ", id, e);
-			throw new ServiceException("unable to revoke role:" + e.getMessage());
+			throw new ServiceException("unable to revoke role:" + e);
 		} catch (EmployeeNotFoundException | ValidationException e) {
 			throw e;
 		}
@@ -203,7 +201,7 @@ public class EmployeeServices {
 			}
 			dao.setPassword(id, Utils.hashPass(pass));
 			logger.info("password reset {} succesfully to id {} ", id);
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			throw new ServiceException("Password reset failed");
 		}
 	}
@@ -255,7 +253,7 @@ public class EmployeeServices {
 		} catch (EmployeeNotFoundException e) {
 			throw e;
 
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			logger.error("Update failed for {}", id, e);
 			throw new ServiceException("Unable to update employee");
 		}
@@ -313,7 +311,7 @@ public class EmployeeServices {
 		} catch (EmployeeNotFoundException e) {
 			throw e;
 
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			logger.error("View employee failed {}", id, e);
 			throw new ServiceException("Unable to fetch employee");
 		}
@@ -323,7 +321,7 @@ public class EmployeeServices {
 		try {
 			dao.fetchInActive();
 			logger.info("View all inActive employees successful");
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			logger.error("Failed to fetch inActive employees", e);
 			throw new ServiceException("Unable to fetch inActive employees");
 		}

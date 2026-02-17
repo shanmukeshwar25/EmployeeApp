@@ -194,7 +194,7 @@ public class JdbcEmployeeDAO implements EmpDAO {
 	}
 
 	@Override
-	public void deleteId(String id) throws SQLException {
+	public void deleteId(String id){
 		Connection conn = null;
 		try {
 			conn = getConnection();

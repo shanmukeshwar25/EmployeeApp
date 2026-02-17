@@ -9,7 +9,7 @@ import com.employees.model.LoginResult;
 
 public interface EmpDAO {
 	void addEmployee(String name,String pass,String dob,String address,String email,List<String> role,String depname);
-	void deleteId(String id) throws SQLException;
+	void deleteId(String id);
 	void viewEmployees();
 	void viewEmployeeById(String id);
 	boolean checkExists(String id);
@@ -21,4 +21,5 @@ public interface EmpDAO {
     void fetchInActive();
 	Optional<Employee> findById(String id);
 	LoginResult checkLogin(String id, String p);
+	
 }
