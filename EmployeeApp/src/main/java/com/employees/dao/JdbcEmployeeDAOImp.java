@@ -18,7 +18,7 @@ import com.employees.model.LoginResult;
 import com.employees.utils.DatabaseConnection;
 import com.employees.utils.Utils;
 
-public class JdbcEmployeeDAO implements EmpDAO {
+public class JdbcEmployeeDAOImp implements EmpDAO {
 
 	private static final String checkEmp = "select emp_id from emp_login where emp_id=?";
 

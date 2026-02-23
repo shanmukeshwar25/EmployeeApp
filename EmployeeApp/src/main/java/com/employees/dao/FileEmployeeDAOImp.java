@@ -1,6 +1,7 @@
 package com.employees.dao;
 
 import java.io.BufferedWriter;
+import java.util.stream.Collectors;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,7 +19,7 @@ import com.employees.model.LoginResult;
 import com.employees.utils.EmployeeIdGenerator;
 import com.employees.utils.Utils;
 
-public class FileEmployeeDAO implements EmpDAO {
+public class FileEmployeeDAOImp implements EmpDAO {
 
 	// show the employee data
 	private void printEmp(JSONObject emp) {
@@ -37,9 +38,9 @@ public class FileEmployeeDAO implements EmpDAO {
 	}
 
 	public Optional<Employee> findById(String id) {
-		 if (id == null || id.isBlank()) {
-		        return Optional.empty();
-		    }
+		if (id == null || id.isBlank()) {
+			return Optional.empty();
+		}
 		JSONArray arr;
 		try {
 			boolean present = false;
@@ -159,12 +160,15 @@ public class FileEmployeeDAO implements EmpDAO {
 				System.out.println("no employees found");
 				return;
 			}
-			for (Object o : arr) {
-				printEmp((JSONObject) o);
-			}
+//			for (Object o : arr) {
+//				printEmp((JSONObject) o);
+//			}
+
+			arr.stream().forEach(o -> printEmp((JSONObject) o));
+
 		} catch (Exception e) {
-	        System.out.println("Failed to read employee data: " + e.getMessage());
-	    }
+			System.out.println("Failed to read employee data: " + e.getMessage());
+		}
 	}
 
 	public void viewEmployeeById(String id) {
@@ -236,19 +240,19 @@ public class FileEmployeeDAO implements EmpDAO {
 			return;
 
 		try {
-		    JSONArray arr = ReadEmpData.readEmployeeData();
-		    for (Object o : arr) {
-		        JSONObject jsonObject = (JSONObject) o;
+			JSONArray arr = ReadEmpData.readEmployeeData();
+			for (Object o : arr) {
+				JSONObject jsonObject = (JSONObject) o;
 
-		        if (id.equals(jsonObject.get("id"))) {
-		            jsonObject.put("password", password);
-		            savetoFile(arr);
-		            System.out.println("Password updated successfully");
-		            return;
-		        }
-		    }
+				if (id.equals(jsonObject.get("id"))) {
+					jsonObject.put("password", password);
+					savetoFile(arr);
+					System.out.println("Password updated successfully");
+					return;
+				}
+			}
 
-		    System.out.println("Employee not found");
+			System.out.println("Employee not found");
 		} catch (FileNotFoundException e) {
 			System.out.println("file is not found " + e.getMessage());
 		} catch (IOException e) {
@@ -352,7 +356,7 @@ public class FileEmployeeDAO implements EmpDAO {
 
 	// validating the login credentials
 	public LoginResult checkLogin(String id, String p) {
-		if (id == null || id.isBlank()) 
+		if (id == null || id.isBlank())
 			return null;
 
 		List<String> roles = new ArrayList<>();
@@ -395,26 +399,44 @@ public class FileEmployeeDAO implements EmpDAO {
 		return new LoginResult(false, id, roles);
 	}
 
-	// checking whether employee with ID exists or not 
+	// checking whether employee with ID exists or not
 	public boolean checkExists(String id) {
-	    if (id == null || id.isBlank())
-	        return false;
-	    try {
-	        JSONArray arr = ReadEmpData.readEmployeeData();
-	        for (Object o : arr) {
-	            JSONObject emp = (JSONObject) o;
-	            if (id.equals(emp.get("id")))
-	                return true;
-	        }
-	    } catch (Exception e) {
-	        System.out.println("Failed to read employee data: " + e.getMessage());
-	    }
-	    return false;
+		if (id == null || id.isBlank())
+			return false;
+		try {
+			JSONArray arr = ReadEmpData.readEmployeeData();
+//	        for (Object o : arr) {
+//	            JSONObject emp = (JSONObject) o;
+//	            if (id.equals(emp.get("id")))
+//	                return true;
+//	        }
+
+			return arr.stream().anyMatch(o -> id.equals(((JSONObject) o).get("id")));
+
+		} catch (Exception e) {
+			System.out.println("Failed to read employee data: " + e.getMessage());
+		}
+		return false;
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@Override
 	public void fetchInActive() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

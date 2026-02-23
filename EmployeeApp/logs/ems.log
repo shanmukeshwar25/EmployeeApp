@@ -1,24 +1,27 @@
-2026-02-16 16:17:25,520 INFO  com.employees.services.EmployeeServices - Add employee request received for ram prasad 
-2026-02-16 16:17:25,552 INFO  com.employees.services.EmployeeServices - Employee saved successfully EMP12 
-2026-02-16 16:21:20,919 INFO  com.employees.services.EmployeeServices - Add employee request received for Ram Prasad 
-2026-02-16 16:21:20,923 WARN  com.employees.services.EmployeeServices - invalid mail for name :  Ram Prasad 
-2026-02-16 16:21:20,943 INFO  com.employees.services.EmployeeServices - assign role ADMIN123 request recieved for id EMP1  
-2026-02-16 16:21:20,944 WARN  com.employees.services.EmployeeServices - validation failed: invalid role for idADMIN123 
-2026-02-16 16:21:20,946 INFO  com.employees.services.EmployeeServices - Add employee request received for ram prasad 
-2026-02-16 16:21:20,967 INFO  com.employees.services.EmployeeServices - Employee saved successfully EMP12 
-2026-02-16 16:42:57,104 INFO  com.employees.services.EmployeeServices - Add employee request received for Ram Prasad 
-2026-02-16 16:42:57,107 WARN  com.employees.services.EmployeeServices - invalid mail for name :  Ram Prasad 
-2026-02-16 16:42:57,120 INFO  com.employees.services.EmployeeServices - delete employee request recieved for id EMP3 
-2026-02-16 16:42:57,131 INFO  com.employees.services.EmployeeServices - Employee deleted succesfully for employee id EMP3 
-2026-02-16 16:42:57,140 INFO  com.employees.services.EmployeeServices - assign role ADMIN123 request recieved for id EMP1  
-2026-02-16 16:42:57,142 WARN  com.employees.services.EmployeeServices - validation failed: invalid role for idADMIN123 
-2026-02-16 16:42:57,144 INFO  com.employees.services.EmployeeServices - Add employee request received for ram prasad 
-2026-02-16 16:42:57,154 INFO  com.employees.services.EmployeeServices - Employee saved successfully EMP12 
-2026-02-16 16:43:48,465 INFO  com.employees.services.EmployeeServices - Add employee request received for Ram Prasad 
-2026-02-16 16:43:48,468 WARN  com.employees.services.EmployeeServices - invalid mail for name :  Ram Prasad 
-2026-02-16 16:43:48,481 INFO  com.employees.services.EmployeeServices - delete employee request recieved for id EMP3 
-2026-02-16 16:43:48,493 INFO  com.employees.services.EmployeeServices - Employee deleted succesfully for employee id EMP3 
-2026-02-16 16:43:48,523 INFO  com.employees.services.EmployeeServices - assign role ADMIN123 request recieved for id EMP1  
-2026-02-16 16:43:48,524 WARN  com.employees.services.EmployeeServices - validation failed: invalid role for idADMIN123 
-2026-02-16 16:43:48,528 INFO  com.employees.services.EmployeeServices - Add employee request received for ram prasad 
-2026-02-16 16:43:48,538 INFO  com.employees.services.EmployeeServices - Employee saved successfully EMP12 
+2026-02-17 17:10:04,339 INFO  com.employees.services.EmployeeServices - Add employee request received for Ram Prasad 
+2026-02-17 17:10:04,357 WARN  com.employees.services.EmployeeServices - invalid mail for name :  Ram Prasad 
+2026-02-17 17:10:04,411 INFO  com.employees.services.EmployeeServices - delete employee request recieved for id EMP3 
+2026-02-17 17:10:04,433 INFO  com.employees.services.EmployeeServices - Employee deleted succesfully for employee id EMP3 
+2026-02-17 17:10:04,446 INFO  com.employees.services.EmployeeServices - assign role ADMIN123 request recieved for id EMP1  
+2026-02-17 17:10:04,447 WARN  com.employees.services.EmployeeServices - validation failed: invalid role for idADMIN123 
+2026-02-17 17:10:04,450 INFO  com.employees.services.EmployeeServices - Add employee request received for ram prasad 
+2026-02-17 17:10:04,465 INFO  com.employees.services.EmployeeServices - Employee saved successfully EMP12 
+2026-02-17 17:14:00,867 INFO  com.employees.services.EmployeeServices - Add employee request received for Ram Prasad 
+2026-02-17 17:14:00,871 WARN  com.employees.services.EmployeeServices - invalid mail for name :  Ram Prasad 
+2026-02-17 17:14:00,890 INFO  com.employees.services.EmployeeServices - delete employee request recieved for id EMP3 
+2026-02-17 17:14:00,907 INFO  com.employees.services.EmployeeServices - Employee deleted succesfully for employee id EMP3 
+2026-02-17 17:14:00,919 INFO  com.employees.services.EmployeeServices - assign role ADMIN123 request recieved for id EMP1  
+2026-02-17 17:14:00,920 WARN  com.employees.services.EmployeeServices - validation failed: invalid role for idADMIN123 
+2026-02-17 17:14:00,922 INFO  com.employees.services.EmployeeServices - Add employee request received for ram prasad 
+2026-02-17 17:14:00,934 INFO  com.employees.services.EmployeeServices - Employee saved successfully EMP12 
+2026-02-17 22:39:04,848 INFO  com.employees.services.EmployeeServices - View all employees request received 
+2026-02-17 22:39:04,948 INFO  com.employees.services.EmployeeServices - View all employees successful 
+2026-02-21 19:56:27,587 INFO  com.employees.services.EmployeeServices - View employee request for EMP1 
+2026-02-22 22:28:43,180 INFO  com.employees.services.EmployeeServices - View all employees request received 
+2026-02-22 22:28:43,210 INFO  com.employees.services.EmployeeServices - View all employees successful 
+2026-02-22 22:28:54,513 INFO  com.employees.services.EmployeeServices - delete employee request recieved for id EMP15 
+2026-02-22 22:28:54,519 INFO  com.employees.services.EmployeeServices - Employee deleted succesfully for employee id EMP15 
+2026-02-22 22:29:08,059 INFO  com.employees.services.EmployeeServices - delete employee request recieved for id EMP11 
+2026-02-22 22:29:08,065 INFO  com.employees.services.EmployeeServices - Employee deleted succesfully for employee id EMP11 
+2026-02-22 22:40:04,846 INFO  com.employees.services.EmployeeServices - View all employees request received 
+2026-02-22 22:40:04,858 INFO  com.employees.services.EmployeeServices - View all employees successful 

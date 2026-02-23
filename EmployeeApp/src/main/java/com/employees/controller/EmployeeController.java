@@ -19,10 +19,10 @@ public class EmployeeController {
 	public void addEmployee(EmpDAO dao) {
 
 		System.out.println("Enter first name:");
-		String first = sc.nextLine();
+		String firstName = sc.nextLine();
 
 		System.out.println("Enter last name:");
-		String last = sc.nextLine();
+		String lastName = sc.nextLine();
 
 		System.out.println("Enter DOB (dd-MM-yyyy):");
 		String dob = sc.nextLine();
@@ -45,7 +45,7 @@ public class EmployeeController {
 		System.out.println("\nEnter role:");
 		roles.add(sc.nextLine().toUpperCase());
 		try {
-			String password = employeeService.addEmployee(dao, first, last, dob, address, email, roles, dept);
+			String password = employeeService.addEmployee(dao, firstName, lastName, dob, address, email, roles, dept);
 			System.out.println("Employee added successfully");
 			System.out.println("Your password:" + password);
 
@@ -138,10 +138,10 @@ public class EmployeeController {
 		sc.nextLine();
 
 		System.out.println("Enter first name:");
-		String first = sc.nextLine();
+		String firstName = sc.nextLine();
 
 		System.out.println("Enter last name:");
-		String last = sc.nextLine();
+		String lastName = sc.nextLine();
 
 		System.out.println("Enter DOB (dd-MM-yyyy):");
 		String dob = sc.nextLine();
@@ -156,7 +156,7 @@ public class EmployeeController {
 		String dept = sc.nextLine();
 
 		try {
-			employeeService.updateEmployeeById(dao, id, first, last, dob, address, email, dept);
+			employeeService.updateEmployeeById(dao, id, firstName, lastName, dob, address, email, dept);
 		} catch (ValidationException e) {
 			System.out.println("error while update " + e.getMessage());
 		} catch (EmployeeNotFoundException e) {
