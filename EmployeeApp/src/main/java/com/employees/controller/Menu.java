@@ -1,30 +1,18 @@
 
 package com.employees.controller;
 
-import java.util.List;
 import java.util.Scanner;
 
 import com.employees.dao.EmpDAO;
 import com.employees.enums.Operations;
 import com.employees.enums.RolePermission;
-import com.employees.services.AddEmployee;
-import com.employees.services.DeleteEmp;
-import com.employees.services.RoleManager;
-import com.employees.services.Setpassword;
-import com.employees.services.UpdatebyId;
-import com.employees.services.ViewEmp;
+import com.employees.model.Session;
 
 // displaying the main menu for operations
 public class Menu {
-	public static void menu(List<String> roles, EmpDAO dao) {
+	public static void menu(Session session, EmpDAO dao) {
 		Scanner sc = new Scanner(System.in);
 		boolean enter = true;
-		AddEmployee add = new AddEmployee();
-		DeleteEmp del = new DeleteEmp();
-		UpdatebyId up = new UpdatebyId();
-		ViewEmp view = new ViewEmp();
-		Setpassword password = new Setpassword();
-		RoleManager roleop = new RoleManager();
 		RolePermission rolePermission = new RolePermission();
 		System.out.println("WELCOME TO EMPLOYEE MANAGEMENT");
 		System.out.println();
@@ -32,16 +20,16 @@ public class Menu {
 		System.out.println("         OPERATIONS ");
 		System.out.println("  ----------------------------");
 		System.out.println();
-
+		EmployeeController controller = new EmployeeController();
 		for (Operations perm : Operations.values()) {
-			if (rolePermission.hasAccess(roles, perm)) {
+			if (rolePermission.hasAccess(session.getRoles(), perm)) {
 				System.out.println(perm);
 			}
 		}
 		while (enter) {
 			System.out.println();
 			System.out.print("Enter which operation to perform: ");
-			String input = sc.next();
+			String input = sc.nextLine();
 			boolean valid_operation = false;
 			Operations choice = null;
 			try {
@@ -49,33 +37,41 @@ public class Menu {
 				valid_operation = true;
 			} catch (IllegalArgumentException e) {
 				System.out.println("Invalid operation ");
+				continue;
+			}
+			if (!rolePermission.hasAccess(session.getRoles(), choice)) {
+				System.out.println("Access denied");
+				continue;
 			}
 
-			if (valid_operation && rolePermission.hasAccess(roles, choice)) {
+			if (valid_operation && rolePermission.hasAccess(session.getRoles(), choice)) {
 				if (choice == Operations.INSERT)
-					add.addEmployee(dao);
+					controller.addEmployee(dao);
 				else if (choice == Operations.DELETE)
-					del.delete(dao);
+					controller.deleteEmployeeById(dao);
 				else if (choice == Operations.VIEW)
-					view.viewallEmployee(dao);
+					controller.viewallEmployee(dao);
 				else if (choice == Operations.VIEWBYID)
-					view.viewEmployeeById(dao);
+					controller.viewEmployeeById(dao, session);
 				else if (choice == Operations.RESET_PASSWORD)
-					password.reset_password(dao);
+					controller.resetPassword(dao, session);
 				else if (choice == Operations.GRANT_ROLE)
-					roleop.grantRole(dao);
+					controller.grantRole(dao);
 				else if (choice == Operations.REVOKE_ROLE)
-					roleop.revokeRole(dao);
+					controller.revokeRole(dao);
 				else if (choice == Operations.CHANGE_PASS)
-					password.setPass(dao);
-				else if (choice == Operations.UPDATE && !Login.result.getRole().contains("USER"))
-					up.updatebyid(dao);
-				else if (choice == Operations.UPDATE && Login.result.getRole().contains("USER"))
-					up.updateUserbyid(dao);
-				else if (choice == Operations.EXIT)
+					controller.changePassword(dao, session);
+				else if(choice == Operations.FETCH_INACTIVE)
+					controller.fetchInActive(dao);
+				else if (choice == Operations.UPDATE && !session.getRoles().contains("USER"))
+					controller.updateEmployeeById(dao);
+				else if (choice == Operations.UPDATE && session.getRoles().contains("USER"))
+					controller.updateUserbyid(dao, session);
+				else if (choice == Operations.LOGOUT) {
+					System.out.println("logged out successfully");
+					Login.start(dao);
+				} else if (choice == Operations.EXIT)
 					enter = false;
-			} else {
-				System.out.println("Invalid operation enter again");
 			}
 
 		}
